@@ -1,0 +1,32 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <asset>
+
+    <!-- Textures -->
+    <texture type="2d" colorspace="sRGB" name="V_BlueLZ" file="V_BlueLZ_5.png"/>
+
+    <!-- Materials -->
+    <material name="Material" rgba="1 1 1 1" reflectance="0.0" metallic="0.0" roughness="1">
+      <layer texture="V_BlueLZ" role="rgb"/>
+    </material>
+
+    <!-- Visual meshes -->
+    <mesh class="visual" name="V_BlueLZ" file="V_BlueLZ.obj"/>
+
+    <!-- Collision meshes -->
+  </asset>
+
+  <default>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_BlueLZ" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="visual" mesh="V_BlueLZ" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="Material"/>
+    </body>
+  </worldbody>
+</mujoco>

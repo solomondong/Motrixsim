@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!-- 不可动桌子 -->
+<mujoco model="table">
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+  
+  <asset>
+    <model name="table_Desk" file="table_Desk/table_Desk.xml"/>
+    <model name="table_Lun" file="table_Lun/table_Lun.xml"/>
+    <model name="table_LunK" file="table_LunK/table_LunK.xml"/>
+  </asset>
+
+  <worldbody>
+    <body name="table" pos="0 0 0">
+        <!-- 自由关节 -->
+        <!-- <joint name="table_free_joint" type="free"/> -->
+
+        <!-- 桌体 -->
+        <body name="table_Desk">
+            <attach model="table_Desk" prefix="desk_"/>
+        </body>
+
+        <!-- 左前轮壳（含轮子） -->
+        <body name="table_LunK_LF" pos="-0.386187 0.140261 0.07">
+            <!-- <joint name="LF_LunK_joint" type="hinge" axis="0 0 1" /> -->
+            <attach model="table_LunK" prefix="LFK_"/>
+            
+            <!-- 左前轮 -->
+            <body name="table_Lun_LF" pos="0 -0.01063 -0.045243">
+                <!-- <joint name="LF_Lun_joint" type="hinge" axis="1 0 0" /> -->
+                <attach model="table_Lun" prefix="LF_"/>
+            </body>
+        </body>
+    
+        <!-- 右前轮壳（含轮子） -->
+        <body name="table_LunK_RF" pos="0.386187 0.140261 0.07">
+            <!-- <joint name="RF_LunK_joint" type="hinge" axis="0 0 1" /> -->
+            <attach model="table_LunK" prefix="RFK_"/>
+            
+            <!-- 右前轮 -->
+            <body name="table_Lun_RF" pos="0 -0.01063 -0.045243">
+                <!-- <joint name="RF_Lun_joint" type="hinge" axis="1 0 0" /> -->
+                <attach model="table_Lun" prefix="RF_"/>
+            </body>
+        </body>
+    
+        <!-- 左后轮壳（含轮子） -->
+        <body name="table_LunK_LR" pos="-0.364886 -0.162623 0.07">
+            <!-- <joint name="LR_LunK_joint" type="hinge" axis="0 0 1" /> -->
+            <attach model="table_LunK" prefix="LRK_"/>
+            
+            <!-- 左后轮 -->
+            <body name="table_Lun_LR" pos="0 -0.010627 -0.045246">
+                <!-- <joint name="LR_Lun_joint" type="hinge" axis="1 0 0" /> -->
+                <attach model="table_Lun" prefix="LR_"/>
+            </body>
+        </body>
+    
+        <!-- 右后轮壳（含轮子） -->
+        <body name="table_LunK_RR" pos="0.364886 -0.162623 0.07">
+            <!-- <joint name="RR_LunK_joint" type="hinge" axis="0 0 1" /> -->
+            <attach model="table_LunK" prefix="RRK_"/>
+            
+            <!-- 右后轮 -->
+            <body name="table_Lun_RR" pos="0 -0.010627 -0.045246">
+                <!-- <joint name="RR_Lun_joint" type="hinge" axis="1 0 0" /> -->
+                <attach model="table_Lun" prefix="RR_"/>
+            </body>
+        </body>
+    </body>
+  </worldbody>
+</mujoco>

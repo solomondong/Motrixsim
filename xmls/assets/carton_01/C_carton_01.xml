@@ -1,0 +1,19 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <default>
+      <default class="collision">
+        <geom type="mesh"  group="3" contype="1" conaffinity="1"/>
+          <default class="C_carton_01">
+            <geom type="box"  size="0.4050 0.2725 0.0675" quat="1.0 0.0 0.0 0.0" pos="0.0 0.0 0.0" density="1000.0"/>
+          </default>
+      </default>
+  </default>
+
+  <worldbody>
+    <body name="B_carton_01" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="C_carton_01"/>
+    </body>
+  </worldbody>
+
+</mujoco>

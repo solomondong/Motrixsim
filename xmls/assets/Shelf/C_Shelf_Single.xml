@@ -1,0 +1,89 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <default>
+
+      <default class="collision">
+        <geom type="mesh" group="3" contype="1" conaffinity="1"/>
+          <default class="C_Shelf_Cube_001">
+            <geom type="box" size="0.02500000037252903 0.014999999664723873 1.0" quat="1.0 0.0 0.0 0.0" pos="-0.9570000171661377 -0.2850000262260437 1.0" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_002">
+            <geom type="box" size="0.02500000037252903 0.014999999664723873 1.0" quat="1.0 0.0 0.0 0.0" pos="0.9570000171661377 -0.2850000262260437 1.0" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_003">
+            <geom type="box" size="0.02500000037252903 0.014999999664723873 1.0" quat="1.0 0.0 0.0 0.0" pos="-0.9570000171661377 0.2850000262260437 1.0" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_004">
+            <geom type="box" size="0.02500000037252903 0.014999999664723873 1.0" quat="1.0 0.0 0.0 0.0" pos="0.9570000171661377 0.2850000262260437 1.0" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_005">
+            <geom type="box" size="0.9319999814033508 0.30000001192092896 0.02500000037252903" quat="7.549790126404332e-08 -3.3001182895339015e-15 1.0 4.3711395392165286e-08" pos="-2.1855695031547384e-09 -2.1855697251993433e-09 0.16500000655651093" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_006">
+            <geom type="box" size="0.9319999814033508 0.30000001192092896 0.02500000037252903" quat="7.549790126404332e-08 -3.3001182895339015e-15 1.0 4.3711395392165286e-08" pos="-2.1855695031547384e-09 -2.1855697251993433e-09 0.7680000066757202" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_007">
+            <geom type="box" size="0.9319999814033508 0.30000001192092896 0.02500000037252903" quat="7.549790126404332e-08 -3.3001182895339015e-15 1.0 4.3711395392165286e-08" pos="-2.1855695031547384e-09 -2.1855697251993433e-09 1.3710001707077026" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_008">
+            <geom type="box" size="0.9319999814033508 0.30000001192092896 0.02500000037252903" quat="7.549790126404332e-08 -3.3001182895339015e-15 1.0 4.3711395392165286e-08" pos="-2.1855695031547384e-09 -2.1855697251993433e-09 1.974000096321106" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_009">
+            <geom type="box" size="0.014999997802078724 0.2750000059604645 0.004999999888241291" quat="1.0 0.0 0.0 0.0" pos="-0.9570000171661377 0.0 1.0" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_018">
+            <geom type="box" size="0.014999997802078724 0.2750000059604645 0.004999999888241291" quat="1.0 0.0 0.0 0.0" pos="-0.9570000171661377 0.0 1.8949999809265137" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_019">
+            <geom type="box" size="0.014999997802078724 0.2750000059604645 0.004999999888241291" quat="1.0 0.0 0.0 0.0" pos="-0.9570000171661377 0.0 0.10500001907348633" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_020">
+            <geom type="box" size="0.014999997802078724 0.2750000059604645 0.004999999888241291" quat="1.0 0.0 0.0 0.0" pos="0.9570000171661377 0.0 1.0" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_021">
+            <geom type="box" size="0.014999997802078724 0.2750000059604645 0.004999999888241291" quat="1.0 0.0 0.0 0.0" pos="0.9570000171661377 0.0 1.8949999809265137" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_022">
+            <geom type="box" size="0.014999997802078724 0.2750000059604645 0.004999999888241291" quat="1.0 0.0 0.0 0.0" pos="0.9570000171661377 0.0 0.10500001907348633" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_023">
+            <geom type="box" size="0.014999997802078724 0.4024999439716339 0.005000000353902578" quat="0.9170600175857544 -0.3987492322921753 -8.840687349540556e-17 -5.783107883102903e-20" pos="0.9570000171661377 -1.5735228209400728e-26 1.4474999904632568" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_024">
+            <geom type="box" size="0.014999997802078724 0.4024999439716339 0.005000000353902578" quat="0.9170600175857544 0.3987492322921753 -6.033563914058151e-17 6.461726495749889e-17" pos="0.9570000171661377 -1.5735228209400728e-26 0.5525000095367432" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_025">
+            <geom type="box" size="0.014999997802078724 0.4024999439716339 0.005000000353902578" quat="0.9170600175857544 -0.3987492322921753 -8.840687349540556e-17 -5.783107883102903e-20" pos="-0.9570000171661377 -1.5735228209400728e-26 1.4474999904632568" density="1000.0"/>
+          </default>
+          <default class="C_Shelf_Cube_026">
+            <geom type="box" size="0.014999997802078724 0.4024999439716339 0.005000000353902578" quat="0.9170600175857544 0.3987492024898529 -6.033563252313661e-17 6.461725834005399e-17" pos="-0.9570000171661377 -1.5735228209400728e-26 0.5525000095367432" density="1000.0"/>
+          </default>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_Shelf_Single" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="C_Shelf_Cube_001"/>
+      <geom class="C_Shelf_Cube_002"/>
+      <geom class="C_Shelf_Cube_003"/>
+      <geom class="C_Shelf_Cube_004"/>
+      <geom class="C_Shelf_Cube_005"/>
+      <geom class="C_Shelf_Cube_006"/>
+      <geom class="C_Shelf_Cube_007"/>
+      <geom class="C_Shelf_Cube_008"/>
+      <geom class="C_Shelf_Cube_009"/>
+      <geom class="C_Shelf_Cube_018"/>
+      <geom class="C_Shelf_Cube_019"/>
+      <geom class="C_Shelf_Cube_020"/>
+      <geom class="C_Shelf_Cube_021"/>
+      <geom class="C_Shelf_Cube_022"/>
+      <geom class="C_Shelf_Cube_023"/>
+      <geom class="C_Shelf_Cube_024"/>
+      <geom class="C_Shelf_Cube_025"/>
+      <geom class="C_Shelf_Cube_026"/>
+    </body>
+  </worldbody>
+
+</mujoco>

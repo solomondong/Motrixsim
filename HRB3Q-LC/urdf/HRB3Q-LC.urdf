@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="HRB3Q-LC">
+  <link
+    name="Origin_base">
+    <inertial>
+      <origin
+        xyz="1.38482814297601 -0.00156794803559568 -0.0194438924210655"
+        rpy="0 0 0" />
+      <mass
+        value="156.530801212744" />
+      <inertia
+        ixx="0.686406369243221"
+        ixy="-8.7788015821681E-05"
+        ixz="-0.000683638269187829"
+        iyy="88.8913416634242"
+        iyz="4.58273275722229E-05"
+        izz="89.4670175454269" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/Origin_base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/Origin_base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Waist">
+    <inertial>
+      <origin
+        xyz="-1.73788845931125E-06 4.09843367266127E-06 0.370335800513476"
+        rpy="0 0 0" />
+      <mass
+        value="6.72739654383945" />
+      <inertia
+        ixx="0.128578003326412"
+        ixy="-5.48683858854331E-07"
+        ixz="-4.67345241719499E-07"
+        iyy="0.133920864364366"
+        iyz="9.59504113242137E-07"
+        izz="0.0301155657919325" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/Waist.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/Waist.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_Waist"
+    type="prismatic">
+    <origin
+      xyz="-0.00019091 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="Origin_base" />
+    <child
+      link="Waist" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body">
+    <inertial>
+      <origin
+        xyz="4.47428434235259E-06 0.0054149465977954 0.486320399815704"
+        rpy="0 0 0" />
+      <mass
+        value="8.16174511256408" />
+      <inertia
+        ixx="0.0252929798960977"
+        ixy="-1.0950663478297E-06"
+        ixz="-4.15230011161103E-08"
+        iyy="0.0256844268395386"
+        iyz="-0.000316649090724612"
+        izz="0.0170534363864611" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/Body.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/Body.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_Body"
+    type="continuous">
+    <origin
+      xyz="0 0 0.677"
+      rpy="0 0 0" />
+    <parent
+      link="Waist" />
+    <child
+      link="Body" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="arml1">
+    <inertial>
+      <origin
+        xyz="0.00580063706924105 9.87659063977908E-07 -0.0616956383818057"
+        rpy="0 0 0" />
+      <mass
+        value="1.61566224015074" />
+      <inertia
+        ixx="0.00196030121495102"
+        ixy="-1.38256276011268E-07"
+        ixz="8.43357389675001E-06"
+        iyy="0.00171741953492753"
+        iyz="-6.25531450059514E-07"
+        izz="0.00161972988952037" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l1"
+    type="continuous">
+    <origin
+      xyz="-0.1165 0 0.438"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="Body" />
+    <child
+      link="arml1" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="arml2">
+    <inertial>
+      <origin
+        xyz="-2.47059370016844E-05 -0.098325724547618 -0.0486467427626263"
+        rpy="0 0 0" />
+      <mass
+        value="1.12419379759845" />
+      <inertia
+        ixx="0.00129406310927365"
+        ixy="7.29198888563266E-07"
+        ixz="5.6718333170603E-07"
+        iyy="0.000889934404940177"
+        iyz="-2.45973925912643E-06"
+        izz="0.00132499952054773" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l2"
+    type="continuous">
+    <origin
+      xyz="0.0505 0 -0.074"
+      rpy="0 1.5708 0" />
+    <parent
+      link="arml1" />
+    <child
+      link="arml2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="arml3">
+    <inertial>
+      <origin
+        xyz="0.00213058851469222 -2.46823754913583E-05 0.0935415880900397"
+        rpy="0 0 0" />
+      <mass
+        value="1.08770349053362" />
+      <inertia
+        ixx="0.00102523835664429"
+        ixy="-7.46843828352358E-07"
+        ixz="-1.92281400485864E-05"
+        iyy="0.000857662232457349"
+        iyz="2.4377308015211E-07"
+        izz="0.000775433253468383" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l3"
+    type="continuous">
+    <origin
+      xyz="0 -0.1455 -0.0505"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="arml2" />
+    <child
+      link="arml3" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="arml4">
+    <inertial>
+      <origin
+        xyz="0.0748563330855855 -5.36320221566911E-09 -0.0384400599653859"
+        rpy="0 0 0" />
+      <mass
+        value="0.291945457019171" />
+      <inertia
+        ixx="0.000202239159805527"
+        ixy="-1.44965626685055E-09"
+        ixz="-5.59680436849159E-06"
+        iyy="0.000549607386399966"
+        iyz="-5.7929870298915E-12"
+        izz="0.000551515013211078" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l4"
+    type="continuous">
+    <origin
+      xyz="0.04 0 0.106"
+      rpy="-1.5708 0 -1.5708" />
+    <parent
+      link="arml3" />
+    <child
+      link="arml4" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="arml5">
+    <inertial>
+      <origin
+        xyz="7.79053707808675E-05 0.0015129197114605 0.0976562210058013"
+        rpy="0 0 0" />
+      <mass
+        value="0.842824039046815" />
+      <inertia
+        ixx="0.000594798314249688"
+        ixy="7.24969454863584E-07"
+        ixz="-1.39123716787588E-07"
+        iyy="0.000663056683993988"
+        iyz="-1.42528567733777E-05"
+        izz="0.000488816760765804" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l5"
+    type="continuous">
+    <origin
+      xyz="0.144 0 -0.04"
+      rpy="0 1.5708 0" />
+    <parent
+      link="arml4" />
+    <child
+      link="arml5" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="arml6">
+    <inertial>
+      <origin
+        xyz="-3.87953496743532E-05 -0.0827611497194195 -0.0343557296795404"
+        rpy="0 0 0" />
+      <mass
+        value="0.750716989226528" />
+      <inertia
+        ixx="0.000613907914614685"
+        ixy="7.60951912815651E-07"
+        ixz="5.75923757561481E-07"
+        iyy="0.000487830847304463"
+        iyz="3.93672362183647E-06"
+        izz="0.000607071036365369" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l6"
+    type="continuous">
+    <origin
+      xyz="0 0.036 0.113"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="arml5" />
+    <child
+      link="arml6" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="arml7">
+    <inertial>
+      <origin
+        xyz="0.00137872677447914 -2.10185572045996E-05 0.0594139048805935"
+        rpy="0 0 0" />
+      <mass
+        value="1.53968802705119" />
+      <inertia
+        ixx="0.000614958585916074"
+        ixy="1.04115297814328E-05"
+        ixz="7.20653852709879E-08"
+        iyy="0.00116160684632029"
+        iyz="-1.14267122009406E-07"
+        izz="0.00132160556724999" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/arml7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_l7"
+    type="continuous">
+    <origin
+      xyz="0 -0.12 -0.036"
+      rpy="1.5708 0 0" />
+    <parent
+      link="arml6" />
+    <child
+      link="arml7" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="armr1">
+    <inertial>
+      <origin
+        xyz="0.00580063707987277 -2.8414561215051E-06 0.0616934278468561"
+        rpy="0 0 0" />
+      <mass
+        value="1.61566224032513" />
+      <inertia
+        ixx="0.00196030121609016"
+        ixy="-8.54412946097632E-07"
+        ixz="-8.84705317059134E-06"
+        iyy="0.00171816923667757"
+        iyz="1.92687023734233E-07"
+        izz="0.00161898018995245" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r1"
+    type="continuous">
+    <origin
+      xyz="0.1165 0 0.438"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="Body" />
+    <child
+      link="armr1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="armr2">
+    <inertial>
+      <origin
+        xyz="-2.47060097812446E-05 -0.0983257245428618 -0.0486467427829016"
+        rpy="0 0 0" />
+      <mass
+        value="1.12419379715922" />
+      <inertia
+        ixx="0.00129406309674369"
+        ixy="7.27419999573231E-07"
+        ixz="5.67183982914884E-07"
+        iyy="0.000889934416743309"
+        iyz="-2.45973975427885E-06"
+        izz="0.00132499952011308" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r2"
+    type="continuous">
+    <origin
+      xyz="0.0505 0 0.074"
+      rpy="0 1.5708 0" />
+    <parent
+      link="armr1" />
+    <child
+      link="armr2" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="armr3">
+    <inertial>
+      <origin
+        xyz="-0.00213058851915929 2.46823450066325E-05 0.0935415880247177"
+        rpy="0 0 0" />
+      <mass
+        value="1.08770349080251" />
+      <inertia
+        ixx="0.0010252383571699"
+        ixy="-7.46844455069472E-07"
+        ixz="1.9228138773624E-05"
+        iyy="0.000857662233743101"
+        iyz="-2.43772306395215E-07"
+        izz="0.000775433252665538" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r3"
+    type="continuous">
+    <origin
+      xyz="0 -0.1455 -0.0505"
+      rpy="-1.5708 0 -3.1416" />
+    <parent
+      link="armr2" />
+    <child
+      link="armr3" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="armr4">
+    <inertial>
+      <origin
+        xyz="-0.0748558086239512 -4.49695369830749E-09 0.0384400601677456"
+        rpy="0 0 0" />
+      <mass
+        value="0.29194545605031" />
+      <inertia
+        ixx="0.000202239164385698"
+        ixy="2.62209332349811E-11"
+        ixz="-5.59680436805108E-06"
+        iyy="0.000549607381699348"
+        iyz="5.80669909426674E-12"
+        izz="0.000551515013126759" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r4"
+    type="continuous">
+    <origin
+      xyz="-0.04 0 0.106"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="armr3" />
+    <child
+      link="armr4" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="armr5">
+    <inertial>
+      <origin
+        xyz="-6.9718438756583E-06 0.0015740328830357 0.0976593657680329"
+        rpy="0 0 0" />
+      <mass
+        value="0.841032453778833" />
+      <inertia
+        ixx="0.000593706194723659"
+        ixy="-1.04358508871097E-07"
+        ixz="3.69354807583659E-07"
+        iyy="0.000663013861172857"
+        iyz="-1.37552740906956E-05"
+        izz="0.000489840081312858" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r5"
+    type="continuous">
+    <origin
+      xyz="-0.144 0 0.04"
+      rpy="3.1416 1.5708 0" />
+    <parent
+      link="armr4" />
+    <child
+      link="armr5" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="armr6">
+    <inertial>
+      <origin
+        xyz="1.38231033283698E-06 -0.0827611497194189 -0.0343123043702178"
+        rpy="0 0 0" />
+      <mass
+        value="0.75071698922654" />
+      <inertia
+        ixx="0.000613420330037972"
+        ixy="2.32559881355643E-08"
+        ixz="-5.03010033933128E-07"
+        iyy="0.000487830847304468"
+        iyz="3.02649310239814E-06"
+        izz="0.00060755862094211" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r6"
+    type="continuous">
+    <origin
+      xyz="0 0.036 0.113"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="armr5" />
+    <child
+      link="armr6" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="armr7">
+    <inertial>
+      <origin
+        xyz="-0.00137872677447762 2.10185572047106E-05 0.0594139048805939"
+        rpy="0 0 0" />
+      <mass
+        value="1.53968802705119" />
+      <inertia
+        ixx="0.000614958585916072"
+        ixy="1.04115297814326E-05"
+        ixz="-7.20653852642896E-08"
+        iyy="0.00116160684632029"
+        iyz="1.14267122008994E-07"
+        izz="0.00132160556724999" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://HRB3Q-LC/meshes/armr7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_r7"
+    type="continuous">
+    <origin
+      xyz="0 -0.12 -0.036"
+      rpy="1.5708 0 0" />
+    <parent
+      link="armr6" />
+    <child
+      link="armr7" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+</robot>

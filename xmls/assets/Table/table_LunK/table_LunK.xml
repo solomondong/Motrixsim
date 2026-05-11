@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<mujoco model="table_LunK">
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <!-- 加载视觉和碰撞模型作为资源 -->
+  <asset>
+    <model name="visual_table_LunK" file="V_table_LunK.xml"/>
+  </asset>
+
+  <worldbody>
+    <body name="table_LunK" pos="0 0 0">
+
+      <!-- 附加视觉模型 -->
+      <body name="visual_anchor">
+        <attach model="visual_table_LunK" prefix="visual_"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

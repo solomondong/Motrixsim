@@ -1,0 +1,206 @@
+<!-- hrb3q_grasp_demo.xml -->
+<!-- HRB3Q-LC (fixed base) picks a bottle from the shelf in front and places it on the table behind,
+     using left arm + Body 180-deg rotation. No explicit gripper; grasp is simulated by teleporting
+     the bottle to follow the end-effector while "held". -->
+<mujoco model="HRB3Q-LC-grasp">
+    <compiler angle="radian" meshdir="/opt/HRB3Q-LC/meshes"/>
+
+    <visual>
+        <map zfar="50"/>
+        <global azimuth="-90" elevation="-20"/>
+        <frame length="0.12" linewidth="3"/>
+    </visual>
+
+    <asset>
+        <!-- Sky / ground -->
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+        <texture type="2d" name="groundplane" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.3 0.4 0.5" width="512" height="512"/>
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" rgba="0.8 0.8 0.8 1"/>
+
+        <!-- HRB3Q-LC meshes -->
+        <mesh name="Origin_base" file="Origin_base.STL"/>
+        <mesh name="Waist" file="Waist.STL"/>
+        <mesh name="Body" file="Body.STL"/>
+        <mesh name="arml1" file="arml1.STL"/>
+        <mesh name="arml2" file="arml2.STL"/>
+        <mesh name="arml3" file="arml3.STL"/>
+        <mesh name="arml4" file="arml4.STL"/>
+        <mesh name="arml5" file="arml5.STL"/>
+        <mesh name="arml6" file="arml6.STL"/>
+        <mesh name="arml7" file="arml7.STL"/>
+        <mesh name="armr1" file="armr1.STL"/>
+        <mesh name="armr2" file="armr2.STL"/>
+        <mesh name="armr3" file="armr3.STL"/>
+        <mesh name="armr4" file="armr4.STL"/>
+        <mesh name="armr5" file="armr5.STL"/>
+        <mesh name="armr6" file="armr6.STL"/>
+        <mesh name="armr7" file="armr7.STL"/>
+
+        <!-- External props -->
+        <model name="shelf" file="assets/Shelf/Shelf_Single.xml"/>
+        <model name="table" file="assets/Table/table.xml"/>
+        <model name="bottle_base2" file="assets/001_bottle/base2/scene.xml"/>
+    </asset>
+
+    <worldbody>
+        <light pos="1.5 1.5 3.5" dir="-1 -1 -2" directional="true"/>
+        <light pos="-1.5 -1.5 3.5" dir="1 1 -2" directional="true"/>
+
+        <!-- Ground plane -->
+        <geom name="floor" size="0 0 0.05" pos="0 0 0" type="plane" material="groundplane" rgba="0.8 0.8 0.8 1"/>
+
+        <!-- HRB3Q-LC Robot (fixed to world, chassis raised 0.35m so base clears floor) -->
+        <body name="Origin_base" pos="0 0 0.35">
+            <inertial pos="1.384828 -0.001568 -0.019444" mass="156.531" diaginertia="0.686 88.891 89.467"/>
+            <geom type="mesh" mesh="Origin_base" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+            <body name="Waist" pos="-0.00019091 0 0">
+                <inertial pos="0 0 0.370336" mass="6.727" diaginertia="0.129 0.134 0.030"/>
+                <!-- Keep the URDF axis (world-X) but we never command it so it stays at 0. -->
+                <joint name="Joint_Waist" type="slide" axis="1 0 0" range="0 0.5" damping="200"/>
+                <geom type="mesh" mesh="Waist" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                <body name="Body" pos="0 0 0.677">
+                    <inertial pos="0 0.005415 0.486320" mass="8.162" diaginertia="0.025 0.026 0.017"/>
+                    <joint name="Joint_Body" type="hinge" axis="0 0 1" range="-3.14159 3.14159" damping="20"/>
+                    <geom type="mesh" mesh="Body" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                    <!-- Left Arm -->
+                    <body name="arml1" pos="-0.1165 0 0.438" euler="1.5708 0 1.5708">
+                        <inertial pos="0.005801 0 -0.061696" mass="1.616" diaginertia="0.00196 0.00172 0.00162"/>
+                        <joint name="Joint_l1" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                        <geom type="mesh" mesh="arml1" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                        <body name="arml2" pos="0.0505 0 -0.074" euler="0 1.5708 0">
+                            <inertial pos="0 -0.098326 -0.048647" mass="1.124" diaginertia="0.00129 0.00089 0.00132"/>
+                            <joint name="Joint_l2" type="hinge" axis="0 0 1" range="-3.14159 3.14159" damping="5"/>
+                            <geom type="mesh" mesh="arml2" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                            <body name="arml3" pos="0 -0.1455 -0.0505" euler="-1.5708 0 3.1416">
+                                <inertial pos="0.002131 0 0.093542" mass="1.088" diaginertia="0.00103 0.000858 0.000775"/>
+                                <joint name="Joint_l3" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                <geom type="mesh" mesh="arml3" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                <body name="arml4" pos="0.04 0 0.106" euler="-1.5708 0 -1.5708">
+                                    <inertial pos="0.074856 0 -0.038440" mass="0.292" diaginertia="0.000202 0.000550 0.000552"/>
+                                    <joint name="Joint_l4" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                    <geom type="mesh" mesh="arml4" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                    <body name="arml5" pos="0.144 0 -0.04" euler="0 1.5708 0">
+                                        <inertial pos="0 0.001513 0.097656" mass="0.843" diaginertia="0.000595 0.000663 0.000489"/>
+                                        <joint name="Joint_l5" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                        <geom type="mesh" mesh="arml5" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                        <body name="arml6" pos="0 0.036 0.113" euler="-1.5708 0 0">
+                                            <inertial pos="0 -0.082761 -0.034356" mass="0.751" diaginertia="0.000614 0.000488 0.000607"/>
+                                            <joint name="Joint_l6" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                            <geom type="mesh" mesh="arml6" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                            <body name="arml7" pos="0 -0.12 -0.036" euler="1.5708 0 0">
+                                                <inertial pos="0.001379 0 0.059414" mass="1.540" diaginertia="0.000615 0.00116 0.00132"/>
+                                                <joint name="Joint_l7" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                                <geom type="mesh" mesh="arml7" contype="0" conaffinity="0" rgba="0.4 0.7 1.0 1"/>
+                                                <site name="eef_l" pos="0 0 0.08" size="0.01" rgba="1 0.4 0 1"/>
+                                            </body>
+                                        </body>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+
+                    <!-- Right Arm -->
+                    <body name="armr1" pos="0.1165 0 0.438" euler="1.5708 0 1.5708">
+                        <inertial pos="0.005801 0 0.061693" mass="1.616" diaginertia="0.00196 0.00172 0.00162"/>
+                        <joint name="Joint_r1" type="hinge" axis="0 0 1" range="-3.14159 3.14159" damping="5"/>
+                        <geom type="mesh" mesh="armr1" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                        <body name="armr2" pos="0.0505 0 0.074" euler="0 1.5708 0">
+                            <inertial pos="0 -0.098326 -0.048647" mass="1.124" diaginertia="0.00129 0.00089 0.00132"/>
+                            <joint name="Joint_r2" type="hinge" axis="0 0 1" range="-3.14159 3.14159" damping="5"/>
+                            <geom type="mesh" mesh="armr2" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                            <body name="armr3" pos="0 -0.1455 -0.0505" euler="-1.5708 0 -3.1416">
+                                <inertial pos="-0.002131 0 0.093542" mass="1.088" diaginertia="0.00103 0.000858 0.000775"/>
+                                <joint name="Joint_r3" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                <geom type="mesh" mesh="armr3" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                <body name="armr4" pos="-0.04 0 0.106" euler="1.5708 0 1.5708">
+                                    <inertial pos="-0.074856 0 0.038440" mass="0.292" diaginertia="0.000202 0.000550 0.000552"/>
+                                    <joint name="Joint_r4" type="hinge" axis="0 0 1" range="-3.14159 3.14159" damping="5"/>
+                                    <geom type="mesh" mesh="armr4" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                    <body name="armr5" pos="-0.144 0 0.04" euler="3.1416 1.5708 0">
+                                        <inertial pos="0 0.001574 0.097659" mass="0.841" diaginertia="0.000594 0.000663 0.000490"/>
+                                        <joint name="Joint_r5" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                        <geom type="mesh" mesh="armr5" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                        <body name="armr6" pos="0 0.036 0.113" euler="-1.5708 0 0">
+                                            <inertial pos="0 -0.082761 -0.034312" mass="0.751" diaginertia="0.000613 0.000488 0.000608"/>
+                                            <joint name="Joint_r6" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                            <geom type="mesh" mesh="armr6" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+
+                                            <body name="armr7" pos="0 -0.12 -0.036" euler="1.5708 0 0">
+                                                <inertial pos="-0.001379 0 0.059414" mass="1.540" diaginertia="0.000615 0.00116 0.00132"/>
+                                                <joint name="Joint_r7" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
+                                                <geom type="mesh" mesh="armr7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+                                                <site name="eef_r" pos="0 0 0.08" size="0.01" rgba="1 0.4 0 1"/>
+                                            </body>
+                                        </body>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <!-- Shelf in front of the robot (+Y).  Shelf intrinsic bottle rows are at
+             local y=+/-0.12, deck heights z=0.793 (lower) and z=1.396 (upper).
+             Robot has a fixed torso; left-arm shoulder is at world (-0.1165, 0, 1.465).
+             Arm reach from shoulder is ~0.65m, so shelf must be close.
+             With shelf at y=0.55, the front-row slots sit at world y=0.43. -->
+        <frame pos="0 0.55 0" euler="0 0 0">
+            <attach model="shelf" prefix="Sh_/"/>
+        </frame>
+
+        <!-- Table behind the robot (-Y), serving as placement target after
+             Body rotates ~180 deg.  Surface height of this table asset is ~0.816m. -->
+        <frame pos="0 -0.55 0" euler="0 0 3.14159">
+            <attach model="table" prefix="Tb_/"/>
+        </frame>
+
+        <!-- Target bottle on the UPPER shelf deck at world (-0.2, 0.43, 1.396).
+             Distance from left shoulder ~0.44m - well within reach. -->
+        <frame pos="-0.2 0.43 1.396" euler="0 0 0">
+            <attach model="bottle_base2" prefix="Bt_/"/>
+        </frame>
+    </worldbody>
+
+    <actuator>
+        <!-- Torso -->
+        <position name="actuator_waist" joint="Joint_Waist" kp="30000" kv="3000" ctrllimited="true" ctrlrange="0 0.5"/>
+        <position name="actuator_body" joint="Joint_Body" kp="800" kv="80" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+
+        <!-- Left arm -->
+        <position name="actuator_l1" joint="Joint_l1" kp="800" kv="80" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_l2" joint="Joint_l2" kp="600" kv="60" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_l3" joint="Joint_l3" kp="600" kv="60" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_l4" joint="Joint_l4" kp="500" kv="50" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_l5" joint="Joint_l5" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_l6" joint="Joint_l6" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_l7" joint="Joint_l7" kp="150" kv="15" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+
+        <!-- Right arm -->
+        <position name="actuator_r1" joint="Joint_r1" kp="800" kv="80" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_r2" joint="Joint_r2" kp="600" kv="60" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_r3" joint="Joint_r3" kp="600" kv="60" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_r4" joint="Joint_r4" kp="500" kv="50" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_r5" joint="Joint_r5" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_r6" joint="Joint_r6" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+        <position name="actuator_r7" joint="Joint_r7" kp="150" kv="15" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
+    </actuator>
+
+    <option gravity="0 0 -9.81" timestep="0.002"/>
+</mujoco>

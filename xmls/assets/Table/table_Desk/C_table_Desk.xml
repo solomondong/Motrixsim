@@ -1,0 +1,84 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <default>
+      <default class="collision">
+        <geom type="mesh" group="3" contype="1" conaffinity="1"/>
+          <default class="C_table_Desk_001">
+            <geom type="box" size="0.36000001430511475 0.25 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="0.0 0.0 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_002">
+            <geom type="box" size="0.019999999552965164 0.20999999344348907 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="0.3799999952316284 0.0 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_003">
+            <geom type="box" size="0.019999999552965164 0.20999999344348907 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="-0.3799999952316284 0.0 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_004">
+            <geom type="box" size="0.02499999850988388 0.02499999850988388 0.35249999165534973" quat="7.549790126404332e-08 0.0 1.0 0.0" pos="-5.285348692041225e-08 0.06107062101364136 0.4424999952316284" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_005">
+            <geom type="box" size="0.23000000417232513 0.02500000037252903 0.009999999776482582" quat="1.0 0.0 0.0 0.0" pos="0.0 0.061070606112480164 0.07999999821186066" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_006">
+            <geom type="box" size="0.029999999329447746 0.009999999776482582 0.1708800047636032" quat="0.6891521215438843 0.6891523003578186 0.15833275020122528 0.1583327054977417" pos="0.30779963731765747 -0.055571142584085464 0.08000003546476364" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_007">
+            <geom type="box" size="0.1127999871969223 0.009999998845160007 0.030000008642673492" quat="0.6891520023345947 0.6891523599624634 0.15833280980587006 0.15833264589309692" pos="0.3203272223472595 0.10831178724765778 0.08000000566244125" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_008">
+            <geom type="box" size="0.029999999329447746 0.009999999776482582 0.1708800345659256" quat="0.6891518831253052 0.6891525387763977 -0.1583326756954193 -0.15833260118961334" pos="-0.3077999949455261 -0.055571142584085464 0.08000003546476364" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_009">
+            <geom type="box" size="0.11279997229576111 0.009999998845160007 0.030000003054738045" quat="0.6891520619392395 0.6891523599624634 -0.15833266079425812 -0.15833260118961334" pos="-0.3203270137310028 0.10831178724765778 0.08000000566244125" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_010">
+            <geom type="cylinder" size="0.03999999910593033 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="0.35999998450279236 0.21000121533870697 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_011">
+            <geom type="cylinder" size="0.03999999910593033 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="-0.3600012958049774 0.21000118553638458 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_012">
+            <geom type="cylinder" size="0.03999999910593033 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="0.35999998450279236 -0.20999999344348907 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_Desk_013">
+            <geom type="cylinder" size="0.03999999910593033 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="-0.36000123620033264 -0.21000002324581146 0.8029999732971191" density="1000.0"/>
+          </default>
+          <default class="C_table_LunK_LF">
+            <geom type="cylinder" size="0.014999999664723873 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="-0.38618698716163635 0.1402609944343567 0.06199999898672104" density="1000.0"/>
+          </default>
+          <default class="C_table_LunK_LR">
+            <geom type="cylinder" size="0.014999999664723873 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="-0.3648861348628998 -0.16262337565422058 0.06192382052540779" density="1000.0"/>
+          </default>
+          <default class="C_table_LunK_RF">
+            <geom type="cylinder" size="0.014999999664723873 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="0.38618698716163635 0.1402609944343567 0.06199999898672104" density="1000.0"/>
+          </default>
+          <default class="C_table_LunK_RR">
+            <geom type="cylinder" size="0.014999999664723873 0.00800000037997961" quat="1.0 0.0 0.0 0.0" pos="0.36488598585128784 -0.1626233607530594 0.06192382052540779" density="1000.0"/>
+          </default>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_table_Desk" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="C_table_Desk_001"/>
+      <geom class="C_table_Desk_002"/>
+      <geom class="C_table_Desk_003"/>
+      <geom class="C_table_Desk_004"/>
+      <geom class="C_table_Desk_005"/>
+      <geom class="C_table_Desk_006"/>
+      <geom class="C_table_Desk_007"/>
+      <geom class="C_table_Desk_008"/>
+      <geom class="C_table_Desk_009"/>
+      <geom class="C_table_Desk_010"/>
+      <geom class="C_table_Desk_011"/>
+      <geom class="C_table_Desk_012"/>
+      <geom class="C_table_Desk_013"/>
+      <geom class="C_table_LunK_LF"/>
+      <geom class="C_table_LunK_LR"/>
+      <geom class="C_table_LunK_RF"/>
+      <geom class="C_table_LunK_RR"/>
+    </body>
+  </worldbody>
+
+</mujoco>

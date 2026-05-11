@@ -1,0 +1,20 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <default>
+      <default class="collision">
+        <geom type="mesh" group="3" contype="1" conaffinity="1"/>
+          <default class="C_table_Lun">
+            <geom type="cylinder" size="0.025000005960464478 0.022499989718198776" quat="0.4999998211860657 0.4999999701976776 0.5000001788139343 0.5000000596046448" pos="0.0 1.5949526144254378e-09 1.0119727278379287e-10" density="1000.0"/>
+          </default>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_table_Lun" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="C_table_Lun"/>
+    </body>
+  </worldbody>
+
+</mujoco>

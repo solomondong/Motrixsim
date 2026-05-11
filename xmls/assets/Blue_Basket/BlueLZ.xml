@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<mujoco model="BlueLZ">
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <!-- 加载视觉和碰撞模型作为资源 -->
+  <asset>
+    <model name="visual_BlueLZ" file="V_BlueLZ.xml"/>
+    <model name="collision_BlueLZ" file="C_BlueLZ.xml"/>
+  </asset>
+
+  <worldbody>
+    <body name="BlueLZ" pos="0 0 0">
+      <!-- 自由关节 -->
+      <joint name="BlueLZ_free_joint" type="free"/>
+
+      <!-- 附加碰撞模型 -->
+      <body name="collision_anchor">
+        <attach model="collision_BlueLZ" prefix="collision_"/>
+      </body>
+
+      <!-- 附加视觉模型 -->
+      <body name="visual_anchor">
+        <attach model="visual_BlueLZ" prefix="visual_"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

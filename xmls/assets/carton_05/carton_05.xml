@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<mujoco model="carton_05">
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <!-- 加载视觉和碰撞模型作为资源 -->
+  <asset>
+    <model name="visual_carton_05" file="V_carton_05.xml"/>
+    <model name="collision_carton_05" file="C_carton_05.xml"/>
+  </asset>
+
+  <worldbody>
+    <body name="carton_05" pos="0 0 0">
+      <!-- 自由关节 -->
+      <joint name="carton_05_free_joint" type="free"/>
+
+      <!-- 附加碰撞模型 -->
+      <body name="collision_anchor">
+        <attach model="collision_carton_05" prefix="collision_"/>
+      </body>
+
+      <!-- 附加视觉模型 -->
+      <body name="visual_anchor">
+        <attach model="visual_carton_05" prefix="visual_"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

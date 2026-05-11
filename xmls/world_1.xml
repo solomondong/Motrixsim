@@ -1,0 +1,66 @@
+<!-- world_1.xml -->
+<!-- 商超货架的入口文件 -->
+<!-- 桌子可动 -->
+<!-- 含可动机器人（睿尔曼双臂升降机器人）-->
+<mujoco>
+    <visual>
+        <!-- 可视距离 -->
+        <map zfar="50"/>
+        <!-- azimuth是初始视角绕Z旋转，elevation是仰角 -->
+        <global azimuth="90" elevation="45"/>
+    </visual>
+    <asset>
+        <!--物流_mjcf-->
+            <model name="ground" file="assets/ground/baseground.xml"/>
+            <model name="self" file="assets/Shelf/Shelf_Single.xml"/>
+            <model name="basket" file="assets/Blue_Basket/BlueLZ.xml"/>
+            <model name="table" file="assets/Table/table.xml"/>
+            <model name="carton_01" file="assets/carton_01/carton_01.xml"/>
+            <model name="carton_02" file="assets/carton_02/carton_02.xml"/>
+            <model name="carton_03" file="assets/carton_03/carton_03.xml"/>
+            <model name="carton_04" file="assets/carton_04/carton_04.xml"/>
+            <model name="carton_05" file="assets/carton_05/carton_05.xml"/>
+            <model name="carton_06" file="assets/carton_06/carton_06.xml"/>
+            <model name="robot" file="assets/robot/realman_02_description.xml"/>
+    </asset>
+
+  <worldbody>
+
+    <attach model="ground" prefix="a0"/>
+    <attach model="self" prefix="b0"/>
+
+        <frame pos="0 0 0.858" euler="0 0 15">
+            <attach model="basket" prefix="BB_0/"/>
+        </frame>
+        <frame pos="0 2.5 0.005" euler="0 0 0">
+            <attach model="table" prefix="Tab_0/"/>
+        </frame>
+
+        <!-- 盒子 -->
+        <frame pos="-0.5 0 0.2625" euler="0 0 1">
+            <attach model="carton_01" prefix="Ct_1/"/>
+        </frame>
+        <frame pos="0.45 0 0.345" euler="0 0 20">
+            <attach model="carton_02" prefix="Ct_2/"/>
+        </frame>
+        <frame pos="-0.35 0 1.5634" euler="0 0 16">
+            <attach model="carton_03" prefix="Ct_3/"/>
+        </frame>
+        <frame pos="0.43 0 1.516" euler="0 0 -28">
+            <attach model="carton_04" prefix="Ct_4/"/>
+        </frame>
+        <frame pos="-0.34 0 2.204" euler="0 0 -16">
+            <attach model="carton_05" prefix="Ct_5/"/>
+        </frame>
+        <frame pos="0.39 0 2.0639" euler="0 0 17">
+            <attach model="carton_06" prefix="Ct_6/"/>
+        </frame>
+        <frame pos="0 1.2 0.005" euler="0 0 0">
+            <attach model="robot" prefix="rb_6/"/>
+        </frame>
+
+  </worldbody>
+
+    <!-- 重力设为标准9.81m/s² -->
+    <option gravity="0 0 -9.81"/>
+</mujoco>

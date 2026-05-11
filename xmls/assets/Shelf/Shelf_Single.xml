@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<mujoco model="Shelf_Single">
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <!-- 加载视觉和碰撞模型作为资源 -->
+  <asset>
+    <model name="visual_Shelf_Single" file="V_Shelf_Single.xml"/>
+    <model name="collision_Shelf_Single" file="C_Shelf_Single.xml"/>
+  </asset>
+
+  <worldbody>
+    <body name="Shelf_Single" pos="0 0 0">
+      <!-- 自由关节 -->
+      <!-- <joint name="Shelf_Single_free_joint" type="free"/> -->
+
+      <!-- 附加碰撞模型 -->
+      <body name="collision_anchor">
+        <attach model="collision_Shelf_Single" prefix="collision_"/>
+      </body>
+
+      <!-- 附加视觉模型 -->
+      <body name="visual_anchor">
+        <attach model="visual_Shelf_Single" prefix="visual_"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

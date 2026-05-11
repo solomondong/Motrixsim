@@ -1,0 +1,24 @@
+
+<!-- clean_world.xml -->
+<!-- Minimal world containing only the robot -->
+<mujoco>
+    <visual>
+        <map zfar="50"/>
+        <global azimuth="90" elevation="45"/>
+    </visual>
+
+    <asset>
+        <model name="robot" file="assets/robot/realman_02_description.xml"/>
+        <model name="ground" file="assets/ground/baseground.xml"/>
+    </asset>
+
+    <worldbody>
+        <attach model="ground" prefix="a0"/>
+        <frame pos="0 1.2 0.02" euler="0 0 0">
+            <attach model="robot" prefix="rb_6/"/>
+        </frame>
+    </worldbody>
+
+    <option gravity="0 0 -9.81"/>
+    
+</mujoco>

@@ -1,0 +1,25 @@
+  <?xml version="1.0" ?>
+  <mujoco model="table_Lun">
+    <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+    <!-- 加载视觉和碰撞模型作为资源 -->
+    <asset>
+      <model name="visual_table_Lun" file="V_table_Lun.xml"/>
+      <model name="collision_table_Lun" file="C_table_Lun.xml"/>
+    </asset>
+
+    <worldbody>
+      <body name="table_Lun" pos="0 0 0">
+
+        <!-- 附加碰撞模型 -->
+        <body name="collision_anchor">
+          <attach model="collision_table_Lun" prefix="collision_"/>
+        </body>
+
+        <!-- 附加视觉模型 -->
+        <body name="visual_anchor">
+          <attach model="visual_table_Lun" prefix="visual_"/>
+        </body>
+      </body>
+    </worldbody>
+  </mujoco>

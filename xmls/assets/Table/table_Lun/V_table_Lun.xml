@@ -1,0 +1,32 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <asset>
+
+    <!-- Textures -->
+    <texture type="2d" colorspace="sRGB" name="Lun" file="Lun.png"/>
+
+    <!-- Materials -->
+    <material name="BK_Lun" rgba="1 1 1 1" reflectance="0.5" metallic="0.0" roughness="0.7451523542404175">
+      <layer texture="Lun" role="rgb"/>
+    </material>
+
+    <!-- Visual meshes -->
+    <mesh class="visual" name="V_table_Lun" file="V_table_Lun.obj"/>
+
+    <!-- Collision meshes -->
+  </asset>
+
+  <default>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_table_Lun" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="visual" mesh="V_table_Lun" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="BK_Lun"/>
+    </body>
+  </worldbody>
+</mujoco>

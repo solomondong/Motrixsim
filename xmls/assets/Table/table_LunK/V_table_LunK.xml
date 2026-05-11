@@ -1,0 +1,32 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <asset>
+
+    <!-- Textures -->
+    <texture type="2d" colorspace="sRGB" name="LunK" file="LunK.png"/>
+
+    <!-- Materials -->
+    <material name="Material.001" rgba="1 1 1 1" reflectance="0.5" metallic="0.0" roughness="0.5">
+      <layer texture="LunK" role="rgb"/>
+    </material>
+
+    <!-- Visual meshes -->
+    <mesh class="visual" name="V_table_LunK" file="V_table_LunK.obj"/>
+
+    <!-- Collision meshes -->
+  </asset>
+
+  <default>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_table_LunK" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="visual" mesh="V_table_LunK" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="Material.001"/>
+    </body>
+  </worldbody>
+</mujoco>

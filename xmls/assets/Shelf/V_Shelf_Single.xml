@@ -1,0 +1,45 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <asset>
+
+    <!-- Textures -->
+    <texture type="2d" colorspace="sRGB" name="MI_Liang" file="MI_Liang.png"/>
+    <texture type="2d" colorspace="sRGB" name="MI_Zhu" file="MI_Zhu.png"/>
+
+    <!-- Materials -->
+    <material name="MI_Shelf" rgba="0.8 0.8 0.8 1" reflectance="0.5" metallic="0.8" roughness="0.8"/>
+    <material name="MI_Liang" rgba="1 1 1 1" reflectance="0.5" metallic="0.8" roughness="0.8">
+      <layer texture="MI_Liang" role="rgb"/>
+    </material>
+    <material name="MI_Zhu" rgba="1 1 1 1" reflectance="0.5" metallic="0.8" roughness="0.8">
+      <layer texture="MI_Zhu" role="rgb"/>
+    </material>
+
+    <!-- Visual meshes -->
+    <mesh class="visual" name="V_Ban" file="V_Ban.obj"/>
+    <mesh class="visual" name="V_HLiang" file="V_HLiang.obj"/>
+    <mesh class="visual" name="V_Liang" file="V_Liang.obj"/>
+    <mesh class="visual" name="V_XLiang" file="V_XLiang.obj"/>
+    <mesh class="visual" name="V_Zhu" file="V_Zhu.obj"/>
+
+  </asset>
+
+  <default>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_Shelf_Single" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="visual" mesh="V_Ban" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="MI_Shelf"/>
+      <geom class="visual" mesh="V_HLiang" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="MI_Shelf"/>
+      <geom class="visual" mesh="V_Liang" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="MI_Liang"/>
+      <geom class="visual" mesh="V_XLiang" pos="-0.9569998979568481 0.0 0.5525000095367432" quat="6.9236115507465e-08 -3.0104722270607454e-08 0.3987491726875305 -0.9170600175857544" material="MI_Shelf"/>
+      <geom class="visual" mesh="V_Zhu" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="MI_Zhu"/>
+    </body>
+  </worldbody>
+
+</mujoco>

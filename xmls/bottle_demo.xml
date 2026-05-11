@@ -1,0 +1,156 @@
+<!-- bottle_demo.xml -->
+<!-- 商超货架场景 - 瓶子抓取演示 -->
+<!-- 桌子可动 -->
+<!-- 含可动机器人（睿尔曼双臂升降机器人）-->
+<mujoco>
+    <visual>
+        <map zfar="50"/>
+        <global azimuth="90" elevation="45"/>
+        <frame length="0.1" linewidth="3"/>
+    </visual>
+    <asset>
+        <model name="ground" file="assets/ground/baseground.xml"/>
+        <model name="self" file="assets/Shelf/Shelf_Single.xml"/>
+
+        <model name="table" file="assets/Table/table.xml"/>
+        <model name="carton_01" file="assets/carton_01/carton_01.xml"/>
+        <model name="carton_02" file="assets/carton_02/carton_02.xml"/>
+        <model name="carton_05" file="assets/carton_05/carton_05.xml"/>
+        <model name="carton_06" file="assets/carton_06/carton_06.xml"/>
+
+        <model name="robot" file="assets/robot/realman_02_description.xml"/>
+        
+        <model name="bottle_base2" file="assets/001_bottle/base2/scene.xml"/>
+        <model name="bottle_base3" file="assets/001_bottle/base3/scene.xml"/>
+        <model name="bottle_base4" file="assets/001_bottle/base4/scene.xml"/>
+        <model name="bottle_base5" file="assets/001_bottle/base5/scene.xml"/>
+    </asset>
+
+  <worldbody>
+
+    <attach model="ground" prefix="a0"/>
+    <attach model="self" prefix="b0"/>
+
+
+        <frame pos="0 2.5 0.005" euler="0 0 0">
+            <attach model="table" prefix="Tab_0/"/>
+        </frame>
+        <frame pos="0 1.2 0.02" euler="0 0 0">
+            <attach model="robot" prefix="rb_6/"/>
+        </frame>
+        <frame pos="-0.7 -0.12 1.396">
+            <attach model="bottle_base2" prefix="B16_"/>
+        </frame>
+        <frame pos="-0.5 -0.12 1.396">
+            <attach model="bottle_base2" prefix="B17_"/>
+        </frame>
+        <frame pos="-0.3 -0.12 1.396">
+            <attach model="bottle_base2" prefix="B18_"/>
+        </frame>
+        <frame pos="-0.1 -0.12 1.396">
+            <attach model="bottle_base2" prefix="B19_"/>
+        </frame>
+        <frame pos="-0.7 0.12 1.396">
+            <attach model="bottle_base2" prefix="B20_"/>
+        </frame>
+        <frame pos="-0.5 0.12 1.396">
+            <attach model="bottle_base2" prefix="B21_"/>
+        </frame>
+        <frame pos="-0.3 0.12 1.396">
+            <attach model="bottle_base2" prefix="B22_"/>
+        </frame>
+        <frame pos="-0.1 0.12 1.396">
+            <attach model="bottle_base2" prefix="B23_"/>
+        </frame>
+        <frame pos="0.1 -0.12 1.396">
+            <attach model="bottle_base3" prefix="B24_"/>
+        </frame>
+        <frame pos="0.3 -0.12 1.396">
+            <attach model="bottle_base3" prefix="B25_"/>
+        </frame>
+        <frame pos="0.5 -0.12 1.396">
+            <attach model="bottle_base3" prefix="B26_"/>
+        </frame>
+        <frame pos="0.7 -0.12 1.396">
+            <attach model="bottle_base3" prefix="B27_"/>
+        </frame>
+        <frame pos="0.1 0.12 1.396">
+            <attach model="bottle_base3" prefix="B28_"/>
+        </frame>
+        <frame pos="0.3 0.12 1.396">
+            <attach model="bottle_base3" prefix="B29_"/>
+        </frame>
+        <frame pos="0.5 0.12 1.396">
+            <attach model="bottle_base3" prefix="B30_"/>
+        </frame>
+        <frame pos="0.7 0.12 1.396">
+            <attach model="bottle_base3" prefix="B31_"/>
+        </frame>
+        <frame pos="-0.7 -0.12 0.793">
+            <attach model="bottle_base4" prefix="B32_"/>
+        </frame>
+        <frame pos="-0.5 -0.12 0.793">
+            <attach model="bottle_base4" prefix="B33_"/>
+        </frame>
+        <frame pos="-0.3 -0.12 0.793">
+            <attach model="bottle_base4" prefix="B34_"/>
+        </frame>
+        <frame pos="-0.1 -0.12 0.793">
+            <attach model="bottle_base4" prefix="B35_"/>
+        </frame>
+        <frame pos="-0.7 0.12 0.793">
+            <attach model="bottle_base4" prefix="B36_"/>
+        </frame>
+        <frame pos="-0.5 0.12 0.793">
+            <attach model="bottle_base4" prefix="B37_"/>
+        </frame>
+        <frame pos="-0.3 0.12 0.793">
+            <attach model="bottle_base4" prefix="B38_"/>
+        </frame>
+        <frame pos="-0.1 0.12 0.793">
+            <attach model="bottle_base4" prefix="B39_"/>
+        </frame>
+        <frame pos="0.1 -0.12 0.793">
+            <attach model="bottle_base5" prefix="B40_"/>
+        </frame>
+        <frame pos="0.3 -0.12 0.793">
+            <attach model="bottle_base5" prefix="B41_"/>
+        </frame>
+        <frame pos="0.5 -0.12 0.793">
+            <attach model="bottle_base5" prefix="B42_"/>
+        </frame>
+        <frame pos="0.7 -0.12 0.793">
+            <attach model="bottle_base5" prefix="B43_"/>
+        </frame>
+        <frame pos="0.1 0.12 0.793">
+            <attach model="bottle_base5" prefix="B44_"/>
+        </frame>
+        <frame pos="0.3 0.12 0.793">
+            <attach model="bottle_base5" prefix="B45_"/>
+        </frame>
+        <frame pos="0.5 0.12 0.793">
+            <attach model="bottle_base5" prefix="B46_"/>
+        </frame>
+        <frame pos="0.7 0.12 0.793">
+            <attach model="bottle_base5" prefix="B47_"/>
+        </frame>
+
+
+        <!-- 盒子 -->
+        <frame pos="-0.5 0 0.2625" euler="0 0 1">
+            <attach model="carton_01" prefix="Ct_1/"/>
+        </frame>
+        <frame pos="0.45 0 0.345" euler="0 0 20">
+            <attach model="carton_02" prefix="Ct_2/"/>
+        </frame>
+        <frame pos="-0.34 0 2.204" euler="0 0 -16">
+            <attach model="carton_05" prefix="Ct_5/"/>
+        </frame>
+        <frame pos="0.39 0 2.0639" euler="0 0 17">
+            <attach model="carton_06" prefix="Ct_6/"/>
+        </frame>
+
+  </worldbody>
+
+    <option gravity="0 0 -9.81"/>
+</mujoco>

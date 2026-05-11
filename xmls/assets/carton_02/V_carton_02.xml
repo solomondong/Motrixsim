@@ -1,0 +1,32 @@
+<mujoco>
+  <compiler angle="radian" assetdir="assets" autolimits="true"/>
+
+  <asset>
+
+    <!-- Textures -->
+    <texture type="2d" colorspace="sRGB" name="carton_02_uv" file="carton_02_uv.png"/>
+
+    <!-- Materials -->
+    <material name="MI_carton_02" rgba="1 1 1 1" reflectance="0.5" metallic="0.0" roughness="0.5">
+      <layer texture="carton_02_uv" role="rgb"/>
+    </material>
+
+    <!-- Visual meshes -->
+    <mesh class="visual" name="V_carton_02" file="V_carton_02.obj"/>
+
+  </asset>
+
+  <default>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+  </default>
+
+  <worldbody>
+
+    <body name="B_carton_02" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+      <geom class="visual" mesh="V_carton_02" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="MI_carton_02"/>
+    </body>
+  </worldbody>
+
+</mujoco>

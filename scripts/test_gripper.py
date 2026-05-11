@@ -67,19 +67,14 @@ def test_gripper(model_path: str) -> None:
         else:
             print(f"  Warning: actuator '{name}' not found")
     
-    # Get gripper actuators.  Newer XMLs expose one actuator per visible
-    # segment so the inner base and outer pad are commanded explicitly together.
+    # Get gripper actuators.  Each side keeps two inner/root finger structures.
     l_grippers = _actuator_group(model, [
         "actuator_l_gripper",
         "actuator_l_gripper_r",
-        "actuator_l_gripper_l_pad",
-        "actuator_l_gripper_r_pad",
     ])
     r_grippers = _actuator_group(model, [
         "actuator_r_gripper",
         "actuator_r_gripper_r",
-        "actuator_r_gripper_l_pad",
-        "actuator_r_gripper_r_pad",
     ])
     
     if not l_grippers or not r_grippers:

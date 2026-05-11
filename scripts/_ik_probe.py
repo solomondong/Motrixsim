@@ -16,8 +16,8 @@ print(f"initial EE: pos={ee0[:3]}, quat={ee0[3:7]}")
 
 targets = [
     ("pregrasp",       np.array([-0.2, 0.46, 1.45,  ee0[3], ee0[4], ee0[5], ee0[6]])),
-    ("grasp",          np.array([-0.2, 0.58, 1.451, ee0[3], ee0[4], ee0[5], ee0[6]])),
-    ("lift",           np.array([-0.2, 0.58, 1.591, ee0[3], ee0[4], ee0[5], ee0[6]])),
+    ("grasp",          np.array([-0.2, 0.58, 1.494, ee0[3], ee0[4], ee0[5], ee0[6]])),
+    ("lift",           np.array([-0.2, 0.58, 1.634, ee0[3], ee0[4], ee0[5], ee0[6]])),
     ("above_table",    np.array([ 0.2,-0.42, 1.08,  ee0[3], ee0[4], ee0[5], ee0[6]])),
     ("place",          np.array([ 0.2,-0.42, 0.95,  ee0[3], ee0[4], ee0[5], ee0[6]])),
 ]

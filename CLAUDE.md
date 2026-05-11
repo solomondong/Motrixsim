@@ -75,12 +75,12 @@ python scripts/display_hrb3q_dof.py
 
 ### 夹爪硬件抽象（仿真侧）
 
-仿真用的是 DH 平行夹爪近似建模：每根夹指拆成 `base`（内侧指座）+ `pad`（外侧夹片）两个可见结构件。为避免外段夹片不同步，当前 XML 给每个结构件都配置了独立 `position` actuator，控制脚本需要对同一侧 4 个 actuator 同时下发同一个目标。
+仿真用的是 DH 平行夹爪近似建模：当前只保留每根夹指的内部/root 结构件，外部 `pad` 夹片已移除。每侧夹爪保留左右两个 `position` actuator，控制脚本需要对同一侧 2 个 actuator 同时下发同一个目标。
 
 | 侧别 | Actuator 组 | ctrlrange | 单位 | 含义 |
 |------|-------------|-----------|------|------|
-| 左夹爪 | `actuator_l_gripper`, `actuator_l_gripper_r`, `actuator_l_gripper_l_pad`, `actuator_l_gripper_r_pad` | `[0, 0.04]` | 米 | 左夹爪 4 个结构件同步控制，0=闭合，0.04=完全张开 |
-| 右夹爪 | `actuator_r_gripper`, `actuator_r_gripper_r`, `actuator_r_gripper_l_pad`, `actuator_r_gripper_r_pad` | `[0, 0.04]` | 米 | 右夹爪同上 |
+| 左夹爪 | `actuator_l_gripper`, `actuator_l_gripper_r` | `[0, 0.04]` | 米 | 左夹爪左右内部夹指同步控制，0=闭合，0.04=完全张开 |
+| 右夹爪 | `actuator_r_gripper`, `actuator_r_gripper_r` | `[0, 0.04]` | 米 | 右夹爪同上 |
 
 控制示例：
 
@@ -93,8 +93,6 @@ data = SceneData(model)
 left = [
     model.get_actuator("actuator_l_gripper"),
     model.get_actuator("actuator_l_gripper_r"),
-    model.get_actuator("actuator_l_gripper_l_pad"),
-    model.get_actuator("actuator_l_gripper_r_pad"),
 ]
 
 for actuator in left:
@@ -124,8 +122,8 @@ python scripts/_diag_gripper.py --model <xml_path>
 判读：
 
 - `actuator_l_gripper -> None` 即模型里没夹爪，**不是仿真器问题，是 XML 不对**
-- 4 个左夹爪读数都跟随 ctrl 即内外两段同步正常
-- 只有 `fl_base` 动而 `fl_pad` 不动，说明外段 actuator 缺失或脚本没有同步下发
+- 左右两个内部夹指读数都跟随 ctrl 即同步正常
+- 只有单侧读数跟随 ctrl，说明对侧 actuator 缺失或脚本没有同步下发
 
 ## 工作流约定
 
@@ -133,7 +131,7 @@ python scripts/_diag_gripper.py --model <xml_path>
 - 所有 Python 命令必须在激活环境后执行，避免使用系统 Python
 - 涉及 GUI / 渲染的脚本如需远程运行，请设置 `DISPLAY` 变量
 - 改动 URDF / MJCF 资源后，务必跑 `scripts/display_hrb3q_dof.py` 验证基本可加载
-- 改动夹爪 / 末端结构后，跑 `scripts/_diag_gripper.py --model <xml>` 验证 actuator 命名与 4 个结构件同步行为
+- 改动夹爪 / 末端结构后，跑 `scripts/_diag_gripper.py --model <xml>` 验证 actuator 命名与左右内部夹指同步行为
 - 仿真侧的关节顺序、夹爪开合方向、相机坐标系必须与真机 SDK 输出对齐
 - 涉及 RGBD 数据的代码请同时考虑仿真渲染（虚拟相机）与真机 Gemini 335 的接口差异
 

@@ -7,7 +7,7 @@ runs a closed-loop control test on the left gripper actuator group to verify:
 
   1. Whether the gripper actuator exists in the loaded model.
   2. Whether the actuator actually moves the finger joint(s).
-  3. Whether each visible finger segment (base + outer pad) follows the same
+  3. Whether the two remaining inner/root finger structures follow the same
      ctrl target.
 
 Usage:
@@ -33,12 +33,8 @@ from motrixsim import SceneData, load_model, step
 GRIPPER_ACTUATOR_CANDIDATES = [
     "actuator_l_gripper",
     "actuator_l_gripper_r",
-    "actuator_l_gripper_l_pad",
-    "actuator_l_gripper_r_pad",
     "actuator_r_gripper",
     "actuator_r_gripper_r",
-    "actuator_r_gripper_l_pad",
-    "actuator_r_gripper_r_pad",
     "mimic_relation_l",
     "mimic_relation_r",
     "l_gripper",
@@ -52,12 +48,8 @@ GRIPPER_ACTUATOR_CANDIDATES = [
 GRIPPER_JOINT_CANDIDATES = [
     "Joint_l_gripper_l",
     "Joint_l_gripper_r",
-    "Joint_l_gripper_l_pad",
-    "Joint_l_gripper_r_pad",
     "Joint_r_gripper_l",
     "Joint_r_gripper_r",
-    "Joint_r_gripper_l_pad",
-    "Joint_r_gripper_r_pad",
     "l_gripper_finger_l",
     "l_gripper_finger_r",
 ]
@@ -119,8 +111,6 @@ def _run_control_test(model, data) -> None:
         for name in (
             "actuator_l_gripper",
             "actuator_l_gripper_r",
-            "actuator_l_gripper_l_pad",
-            "actuator_l_gripper_r_pad",
         )
     ]
     l_actuators = [actuator for actuator in l_actuators if actuator is not None]
@@ -129,12 +119,9 @@ def _run_control_test(model, data) -> None:
         return
 
     tracked = {
-        "fl_base": model.get_joint("Joint_l_gripper_l"),
-        "fl_pad":  model.get_joint("Joint_l_gripper_l_pad"),
-        "fr_base": model.get_joint("Joint_l_gripper_r"),
-        "fr_pad":  model.get_joint("Joint_l_gripper_r_pad"),
+        "left_inner": model.get_joint("Joint_l_gripper_l"),
+        "right_inner": model.get_joint("Joint_l_gripper_r"),
     }
-    has_pad = tracked["fl_pad"] is not None or tracked["fr_pad"] is not None
 
     print("\n=== Control response test on left gripper actuator group ===")
     print(f"  (driving {len(l_actuators)} actuators through 0 -> 0.04 -> 0 -> 0.04, 500 steps each)")
@@ -154,11 +141,8 @@ def _run_control_test(model, data) -> None:
         print(row)
 
     print("\n判读规则：")
-    print("  - 所有 4 个数值跟随 ctrl 变化           -> 每个夹指结构件都被同步驱动")
-    print("  - fl_base 跟随但 fl_pad 不动            -> 外段 actuator 缺失或没有被脚本同步下发")
-    print("  - fl_base 动、fr_base 不动              -> 对侧夹指 actuator 缺失或没有被脚本同步下发")
-    if not has_pad:
-        print("\n  [info] 当前模型未发现 _pad 关节, 说明使用的是单 body 单段手指设计.")
+    print("  - 两个数值都跟随 ctrl 变化              -> 左右内部夹指结构同步正常")
+    print("  - 只有一个数值跟随 ctrl                 -> 对侧 actuator 缺失或没有被脚本同步下发")
 
 
 def main() -> None:

@@ -104,8 +104,8 @@
                                                 <geom type="mesh" mesh="arml7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
                                                 
                                                 <!-- Left DH Parallel Gripper.
-                                                     Dual-body finger design: base + pad each on their own slide joint,
-                                                     pads / mirrors bound to the primary joint via <equality>. -->
+                                                     Dual-body finger design: base + pad each on their own slide joint.
+                                                     Test scripts command all segment actuators together. -->
                                                 <body name="gripper_l_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_l_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
@@ -220,19 +220,6 @@
         </body>
     </worldbody>
 
-    <!-- Equality constraints: each gripper has 1 actuated primary joint and 3 follower
-         joints (mirror finger + each finger's pad segment), all bound 1:1 via polycoef. -->
-    <equality>
-        <!-- Left gripper -->
-        <joint joint1="Joint_l_gripper_l" joint2="Joint_l_gripper_r"     polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_l_gripper_l" joint2="Joint_l_gripper_l_pad" polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_l_gripper_l" joint2="Joint_l_gripper_r_pad" polycoef="0 1 0 0 0"/>
-        <!-- Right gripper -->
-        <joint joint1="Joint_r_gripper_l" joint2="Joint_r_gripper_r"     polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_r_gripper_l" joint2="Joint_r_gripper_l_pad" polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_r_gripper_l" joint2="Joint_r_gripper_r_pad" polycoef="0 1 0 0 0"/>
-    </equality>
-
     <actuator>
         <!-- Torso joints -->
         <position name="actuator_waist" joint="Joint_Waist" kp="20000" kv="2000" ctrllimited="true" ctrlrange="0 0.5"/>
@@ -256,11 +243,18 @@
         <position name="actuator_r6" joint="Joint_r6" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
         <position name="actuator_r7" joint="Joint_r7" kp="150" kv="15" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
 
-        <!-- DH Parallel Gripper actuators (one actuator per gripper; equality constraints
-             mirror the other finger and both pad segments).
+        <!-- DH Parallel Gripper actuators.
+             Each visible finger segment has its own actuator; scripts command all
+             four segment joints with the same target every physics step.
              ctrlrange: 0 = fully closed, 0.04 = fully open (40mm stroke per finger). -->
-        <position name="actuator_l_gripper" joint="Joint_l_gripper_l" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcerange="-50 50"/>
-        <position name="actuator_r_gripper" joint="Joint_r_gripper_l" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcerange="-50 50"/>
+        <position name="actuator_l_gripper"       joint="Joint_l_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_l_gripper_r"     joint="Joint_l_gripper_r"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_l_gripper_l_pad" joint="Joint_l_gripper_l_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_l_gripper_r_pad" joint="Joint_l_gripper_r_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper"       joint="Joint_r_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper_r"     joint="Joint_r_gripper_r"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper_l_pad" joint="Joint_r_gripper_l_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper_r_pad" joint="Joint_r_gripper_r_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
     </actuator>
 
     <option gravity="0 0 -9.81" timestep="0.002"/>

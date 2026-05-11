@@ -4,7 +4,8 @@
      Now equipped with Dahuan DH parallel grippers on both arms (40mm stroke per finger).
      - Gripper actuators: actuator_l_gripper / actuator_r_gripper, ctrlrange [0, 0.04]
        (0 = fully closed, 0.04 = fully open)
-     - Each gripper uses an <equality> mimic to keep the two fingers symmetric. -->
+    - Each visible finger segment has its own actuator; scripts command all
+      segment actuators with the same target for robust synchronized motion. -->
 <mujoco model="HRB3Q-LC-grasp">
     <compiler angle="radian" meshdir="/opt/HRB3Q-LC/meshes"/>
 
@@ -108,9 +109,9 @@
                                                 <!-- Left DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total).
                                                      Each finger has TWO independent bodies, each with its own slide joint:
                                                        - finger base (root segment, primary actuated joint)
-                                                       - finger pad  (replaceable gripping pad, separate joint, mimic 1:1)
-                                                     All three follower joints are bound to the primary by <equality>
-                                                     so the four segments translate together visibly. -->
+                                                      - finger pad  (replaceable gripping pad, separate joint and actuator)
+                                                     All four segment joints are commanded together by the demo/test scripts
+                                                     so both the inner bases and outer pads translate together visibly. -->
                                                 <body name="gripper_l_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_l_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
@@ -224,9 +225,10 @@
         <!-- Shelf in front of the robot (+Y).  Shelf intrinsic bottle rows are at
              local y=+/-0.12, deck heights z=0.793 (lower) and z=1.396 (upper).
              Robot has a fixed torso; left-arm shoulder is at world (-0.1165, 0, 1.465).
-             Arm reach from shoulder is ~0.65m, so shelf must be close.
-             With shelf at y=0.55, the front-row slots sit at world y=0.43. -->
-        <frame pos="0 0.55 0" euler="0 0 0">
+             Arm reach from shoulder is ~0.65m.  Keep the shelf a little farther
+             from the robot so the arm mesh does not visually merge into the rack.
+             With shelf at y=0.70, the front-row slots sit at world y=0.58. -->
+        <frame pos="0 0.70 0" euler="0 0 0">
             <attach model="shelf" prefix="Sh_/"/>
         </frame>
 
@@ -236,26 +238,13 @@
             <attach model="table" prefix="Tb_/"/>
         </frame>
 
-        <!-- Target bottle on the UPPER shelf deck at world (-0.2, 0.43, 1.396).
-             Distance from left shoulder ~0.44m - well within reach. -->
-        <frame pos="-0.2 0.43 1.396" euler="0 0 0">
+        <!-- Target bottle on the UPPER shelf deck at world (-0.2, 0.58, 1.396).
+             This keeps it reachable while preventing the arm from starting inside
+             the shelf structure. -->
+        <frame pos="-0.2 0.58 1.396" euler="0 0 0">
             <attach model="bottle_base2" prefix="Bt_/"/>
         </frame>
     </worldbody>
-
-    <!-- Equality constraints: each gripper has 1 actuated primary joint and 3 follower
-         joints (left/right finger base mirrored, plus each finger's pad segment), all
-         bound to the primary 1:1 via polycoef. -->
-    <equality>
-        <!-- Left gripper -->
-        <joint joint1="Joint_l_gripper_l" joint2="Joint_l_gripper_r"     polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_l_gripper_l" joint2="Joint_l_gripper_l_pad" polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_l_gripper_l" joint2="Joint_l_gripper_r_pad" polycoef="0 1 0 0 0"/>
-        <!-- Right gripper -->
-        <joint joint1="Joint_r_gripper_l" joint2="Joint_r_gripper_r"     polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_r_gripper_l" joint2="Joint_r_gripper_l_pad" polycoef="0 1 0 0 0"/>
-        <joint joint1="Joint_r_gripper_l" joint2="Joint_r_gripper_r_pad" polycoef="0 1 0 0 0"/>
-    </equality>
 
     <actuator>
         <!-- Torso -->
@@ -280,12 +269,19 @@
         <position name="actuator_r6" joint="Joint_r6" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
         <position name="actuator_r7" joint="Joint_r7" kp="150" kv="15" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
 
-        <!-- DH Parallel Gripper actuators (one actuator per gripper; equality constraints mirror
-             the other finger and both pad segments).
-             ctrlrange: 0 = fully closed, 0.04 = fully open (40mm stroke per finger).
-             kp/forcerange tuned to provide enough closing force for ~200g objects. -->
-        <position name="actuator_l_gripper" joint="Joint_l_gripper_l" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcerange="-50 50"/>
-        <position name="actuator_r_gripper" joint="Joint_r_gripper_l" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcerange="-50 50"/>
+        <!-- DH Parallel Gripper actuators.
+             Each visible finger segment has its own actuator; scripts command all
+             four segment joints with the same target every physics step.  This is
+             more robust than relying on equality constraints for the outer pads.
+             ctrlrange: 0 = fully closed, 0.04 = fully open (40mm stroke per finger). -->
+        <position name="actuator_l_gripper"       joint="Joint_l_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_l_gripper_r"     joint="Joint_l_gripper_r"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_l_gripper_l_pad" joint="Joint_l_gripper_l_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_l_gripper_r_pad" joint="Joint_l_gripper_r_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper"       joint="Joint_r_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper_r"     joint="Joint_r_gripper_r"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper_l_pad" joint="Joint_r_gripper_l_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
+        <position name="actuator_r_gripper_r_pad" joint="Joint_r_gripper_r_pad" kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
     </actuator>
 
     <option gravity="0 0 -9.81" timestep="0.002"/>

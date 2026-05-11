@@ -4,9 +4,8 @@ Scenario: a bottle sits on the upper shelf deck in front (+Y) of the robot.
 The left arm picks it up, the torso (Joint_Body) rotates ~180 deg so the arm
 swings behind the robot, and the bottle is placed on the table at -Y.
 
-The HRB3Q-LC URDF does not ship with a gripper, so "grasping" is simulated by
-teleporting the bottle to follow the left end-effector (arml7) while a grasp
-flag is active.
+The default grasp path uses the simulated Dahuan parallel gripper actuators and
+real contact/friction.  A `--fake-grasp` fallback is kept for debugging only.
 
 Motion plan (all stages use the LEFT arm only):
   1. READY            - open-loop tuck arm in front so IK has a good seed
@@ -14,7 +13,7 @@ Motion plan (all stages use the LEFT arm only):
   3. CLOSE_GRASP      - activate grasp, wait for settle
   4. LIFT             - closed-loop IK straight up
   5. TUCK_1           - open-loop retract arm close to torso before rotating
-  6. ROTATE_BODY      - open-loop command Joint_Body -> pi (bottle follows EE)
+  6. ROTATE_BODY      - open-loop command Joint_Body -> pi (bottle held by gripper contact)
   7. MOVE_ABOVE_TABLE - closed-loop IK above the place pose
   8. LOWER_TO_PLACE   - closed-loop IK down to table
   9. RELEASE          - release grasp, let bottle settle on table
@@ -96,7 +95,7 @@ STARTUP_STEPS = 400
 EEF_OFFSET = np.array([0.0, 0.0, 0.08, 0.0, 0.0, 0.0, 1.0], dtype=np.float64)
 
 # Poses for the bottle / table are in world frame and must match the XML layout.
-BOTTLE_WORLD = np.array([-0.20, 0.43, 1.396], dtype=np.float64)
+BOTTLE_WORLD = np.array([-0.20, 0.58, 1.396], dtype=np.float64)
 BOTTLE_HEIGHT = 0.22
 
 TABLE_SURFACE_Z = 0.816
@@ -108,6 +107,8 @@ RETREAT_DELTA_Z = 0.15
 # Gripper ctrl values (must match actuator_l_gripper ctrlrange in XML).
 GRIPPER_OPEN = 0.04
 GRIPPER_CLOSED = 0.0
+GRIPPER_PINCH = 0.012
+GRIPPER_PAD_CENTER_Z = 0.055
 
 # Joint targets for open-loop shaping stages.  Convention: q = [body, l1..l7].
 READY_QPOS   = np.array([0.0, 0.0, 1.1, 0.0, 1.6, 0.0, 0.0, 0.0], dtype=np.float64)
@@ -192,9 +193,20 @@ class HRB3QGraspDemo:
         self.acts_l = [self._require("actuator", f"actuator_l{i}") for i in range(1, 8)]
         self.acts_r = [self._require("actuator", f"actuator_r{i}") for i in range(1, 8)]
 
-        # Gripper actuators (real grasping).
-        self.l_gripper = self._require("actuator", "actuator_l_gripper")
-        self.r_gripper = self._require("actuator", "actuator_r_gripper")
+        # Gripper actuators (real grasping).  Each visible segment has its own
+        # actuator; command all segment joints together so the outer pads cannot lag.
+        self.l_grippers = self._require_actuator_group([
+            "actuator_l_gripper",
+            "actuator_l_gripper_r",
+            "actuator_l_gripper_l_pad",
+            "actuator_l_gripper_r_pad",
+        ])
+        self.r_grippers = self._require_actuator_group([
+            "actuator_r_gripper",
+            "actuator_r_gripper_r",
+            "actuator_r_gripper_l_pad",
+            "actuator_r_gripper_r_pad",
+        ])
         self.l_gripper_target = GRIPPER_OPEN
         self.r_gripper_target = GRIPPER_OPEN
 
@@ -221,6 +233,19 @@ class HRB3QGraspDemo:
         if obj is None:
             raise RuntimeError(f"{kind} not found: {name}")
         return obj
+
+    def _require_actuator_group(self, names: list[str]):
+        actuators = []
+        missing = []
+        for name in names:
+            actuator = self.model.get_actuator(name)
+            if actuator is None:
+                missing.append(name)
+            else:
+                actuators.append(actuator)
+        if missing:
+            raise RuntimeError(f"gripper actuators not found: {missing}")
+        return actuators
 
     # ------------------------------------------------------------------
     # Sensing
@@ -268,11 +293,15 @@ class HRB3QGraspDemo:
     # ------------------------------------------------------------------
     def _command_gripper(self) -> None:
         """Re-issue the current gripper ctrl target (called every phys step)."""
-        self.l_gripper.set_ctrl(self.data, float(self.l_gripper_target))
-        self.r_gripper.set_ctrl(self.data, float(self.r_gripper_target))
+        for actuator in self.l_grippers:
+            actuator.set_ctrl(self.data, float(self.l_gripper_target))
+        for actuator in self.r_grippers:
+            actuator.set_ctrl(self.data, float(self.r_gripper_target))
 
     def _activate_grasp(self) -> None:
-        self.l_gripper_target = GRIPPER_CLOSED
+        # Do not command fully closed: leave a small target gap so the gripper
+        # keeps squeezing the bottle instead of numerically tunnelling through it.
+        self.l_gripper_target = GRIPPER_PINCH
         if self.fake_grasp:
             ee = self._ee_pose()
             bottle = self._bottle_pose()
@@ -280,7 +309,7 @@ class HRB3QGraspDemo:
             self.grasp_active = True
             print(f"  [fake] teleport grasp activated. bottle@EE = {self.bottle_in_ee[:3]}")
         else:
-            print(f"  [real] closing gripper: actuator_l_gripper -> {GRIPPER_CLOSED}")
+            print(f"  [real] closing gripper group -> {GRIPPER_PINCH}")
 
     def _deactivate_grasp(self) -> None:
         self.l_gripper_target = GRIPPER_OPEN
@@ -362,7 +391,9 @@ class HRB3QGraspDemo:
 
     def _grasp_pose(self) -> np.ndarray:
         b = self._bottle_pose()
-        return self._pose(np.array([b[0], b[1], b[2] + BOTTLE_HEIGHT * 0.2]))
+        # The IK target is the gripper base.  Align the pad center with the
+        # bottle's mid-height so the two pads close around the bottle body.
+        return self._pose(np.array([b[0], b[1], b[2] + BOTTLE_HEIGHT * 0.5 - GRIPPER_PAD_CENTER_Z]))
 
     def _lift_pose(self) -> np.ndarray:
         p = self._grasp_pose()

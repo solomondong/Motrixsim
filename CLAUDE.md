@@ -75,12 +75,12 @@ python scripts/display_hrb3q_dof.py
 
 ### 夹爪硬件抽象（仿真侧）
 
-仿真用的是 DH 平行夹爪近似建模：每边各一对滑动手指，通过 MuJoCo `<equality polycoef>` 让两根手指同步移动，再用单个 `position` actuator 控制。
+仿真用的是 DH 平行夹爪近似建模：每根夹指拆成 `base`（内侧指座）+ `pad`（外侧夹片）两个可见结构件。为避免外段夹片不同步，当前 XML 给每个结构件都配置了独立 `position` actuator，控制脚本需要对同一侧 4 个 actuator 同时下发同一个目标。
 
-| Actuator | 关节 | ctrlrange | 单位 | 含义 |
-|----------|------|-----------|------|------|
-| `actuator_l_gripper` | `Joint_l_gripper_l`（mimic `Joint_l_gripper_r`）| `[0, 0.04]` | 米 | 左夹爪单边行程，0=闭合，0.04=完全张开（总开口 80mm） |
-| `actuator_r_gripper` | `Joint_r_gripper_l`（mimic `Joint_r_gripper_r`）| `[0, 0.04]` | 米 | 右夹爪同上 |
+| 侧别 | Actuator 组 | ctrlrange | 单位 | 含义 |
+|------|-------------|-----------|------|------|
+| 左夹爪 | `actuator_l_gripper`, `actuator_l_gripper_r`, `actuator_l_gripper_l_pad`, `actuator_l_gripper_r_pad` | `[0, 0.04]` | 米 | 左夹爪 4 个结构件同步控制，0=闭合，0.04=完全张开 |
+| 右夹爪 | `actuator_r_gripper`, `actuator_r_gripper_r`, `actuator_r_gripper_l_pad`, `actuator_r_gripper_r_pad` | `[0, 0.04]` | 米 | 右夹爪同上 |
 
 控制示例：
 
@@ -90,19 +90,24 @@ from motrixsim import SceneData, load_model
 model = load_model("xmls/hrb3q_grasp_demo.xml")
 data = SceneData(model)
 
-l = model.get_actuator("actuator_l_gripper")
-r = model.get_actuator("actuator_r_gripper")
+left = [
+    model.get_actuator("actuator_l_gripper"),
+    model.get_actuator("actuator_l_gripper_r"),
+    model.get_actuator("actuator_l_gripper_l_pad"),
+    model.get_actuator("actuator_l_gripper_r_pad"),
+]
 
-l.set_ctrl(data, 0.04)
-l.set_ctrl(data, 0.00)
-l.set_ctrl(data, 0.02)
+for actuator in left:
+    actuator.set_ctrl(data, 0.04)  # open
+for actuator in left:
+    actuator.set_ctrl(data, 0.012) # pinch bottle
 ```
 
 ### 哪些 XML 含夹爪
 
 | 模型 | 包含夹爪？ | 用途 |
 |------|----------|------|
-| `xmls/hrb3q_gripper_test.xml` | ✅ | 夹爪开闭与 mimic 行为测试 |
+| `xmls/hrb3q_gripper_test.xml` | ✅ | 夹爪开闭与结构件同步行为测试 |
 | `xmls/hrb3q_grasp_demo.xml` | ✅ | 完整抓取场景（货架 + 桌子 + 瓶子 + 双臂夹爪） |
 | `xmls/hrb3q_demo.xml` / `xmls/hrb3q_dof_demo.xml` | ❌ | 仅手臂展示，不含夹爪 |
 | `HRB3Q-LC/urdf/HRB3Q-LC.urdf` | ❌ | 真机 URDF 暂未建模夹爪 |
@@ -119,8 +124,8 @@ python scripts/_diag_gripper.py --model <xml_path>
 判读：
 
 - `actuator_l_gripper -> None` 即模型里没夹爪，**不是仿真器问题，是 XML 不对**
-- 两根手指都跟随 ctrl 即 mimic equality 正常
-- 仅 `finger_l` 动而 `finger_r` 不动，说明 mimic 失效，需要改双 actuator 方案
+- 4 个左夹爪读数都跟随 ctrl 即内外两段同步正常
+- 只有 `fl_base` 动而 `fl_pad` 不动，说明外段 actuator 缺失或脚本没有同步下发
 
 ## 工作流约定
 
@@ -128,7 +133,7 @@ python scripts/_diag_gripper.py --model <xml_path>
 - 所有 Python 命令必须在激活环境后执行，避免使用系统 Python
 - 涉及 GUI / 渲染的脚本如需远程运行，请设置 `DISPLAY` 变量
 - 改动 URDF / MJCF 资源后，务必跑 `scripts/display_hrb3q_dof.py` 验证基本可加载
-- 改动夹爪 / 末端结构后，跑 `scripts/_diag_gripper.py --model <xml>` 验证 actuator 命名与 mimic 行为
+- 改动夹爪 / 末端结构后，跑 `scripts/_diag_gripper.py --model <xml>` 验证 actuator 命名与 4 个结构件同步行为
 - 仿真侧的关节顺序、夹爪开合方向、相机坐标系必须与真机 SDK 输出对齐
 - 涉及 RGBD 数据的代码请同时考虑仿真渲染（虚拟相机）与真机 Gemini 335 的接口差异
 

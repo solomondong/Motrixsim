@@ -23,6 +23,21 @@ GRIPPER_CLOSED = 0.0      # Fully closed
 GRIPPER_HALF_OPEN = 0.02  # 20mm per finger = 40mm total opening
 
 
+def _actuator_group(model, names: list[str]):
+    """Return existing actuators in order; optional names keep old XML compatible."""
+    actuators = []
+    for name in names:
+        actuator = model.get_actuator(name)
+        if actuator is not None:
+            actuators.append((name, actuator))
+    return actuators
+
+
+def _set_actuator_group(data, actuators, target: float) -> None:
+    for _, actuator in actuators:
+        actuator.set_ctrl(data, float(target))
+
+
 def test_gripper(model_path: str) -> None:
     """Load model and test DH parallel gripper open/close movement."""
     abs_model_path = str(Path(model_path).resolve())
@@ -52,17 +67,28 @@ def test_gripper(model_path: str) -> None:
         else:
             print(f"  Warning: actuator '{name}' not found")
     
-    # Get gripper actuators
-    l_gripper = model.get_actuator("actuator_l_gripper")
-    r_gripper = model.get_actuator("actuator_r_gripper")
+    # Get gripper actuators.  Newer XMLs expose one actuator per visible
+    # segment so the inner base and outer pad are commanded explicitly together.
+    l_grippers = _actuator_group(model, [
+        "actuator_l_gripper",
+        "actuator_l_gripper_r",
+        "actuator_l_gripper_l_pad",
+        "actuator_l_gripper_r_pad",
+    ])
+    r_grippers = _actuator_group(model, [
+        "actuator_r_gripper",
+        "actuator_r_gripper_r",
+        "actuator_r_gripper_l_pad",
+        "actuator_r_gripper_r_pad",
+    ])
     
-    if l_gripper is None or r_gripper is None:
+    if not l_grippers or not r_grippers:
         print("ERROR: Gripper actuators not found!")
         return
     
     print(f"\nGripper actuators found:")
-    print(f"  Left gripper:  actuator_l_gripper")
-    print(f"  Right gripper: actuator_r_gripper")
+    print(f"  Left gripper:  {[name for name, _ in l_grippers]}")
+    print(f"  Right gripper: {[name for name, _ in r_grippers]}")
     print(f"\nDH Parallel Gripper specs:")
     print(f"  Stroke per finger: 40mm")
     print(f"  Total opening:     80mm")
@@ -109,8 +135,8 @@ def test_gripper(model_path: str) -> None:
             actuator.set_ctrl(data, target)
         
         # Start with grippers open
-        l_gripper.set_ctrl(data, GRIPPER_OPEN)
-        r_gripper.set_ctrl(data, GRIPPER_OPEN)
+        _set_actuator_group(data, l_grippers, GRIPPER_OPEN)
+        _set_actuator_group(data, r_grippers, GRIPPER_OPEN)
         
         for _ in range(1000):
             step(model, data)
@@ -165,15 +191,15 @@ def test_gripper(model_path: str) -> None:
             
             if l_target is not None:
                 # Fixed target: smoothly interpolate
-                l_gripper.set_ctrl(data, l_target)
-                r_gripper.set_ctrl(data, r_target)
+                _set_actuator_group(data, l_grippers, l_target)
+                _set_actuator_group(data, r_grippers, r_target)
             else:
                 # Sinusoidal cycling mode
                 phase = t_in_step / duration * 2 * math.pi * 2  # 2 full cycles
                 l_val = (math.sin(phase) + 1.0) * 0.5 * GRIPPER_OPEN
                 r_val = (math.cos(phase) + 1.0) * 0.5 * GRIPPER_OPEN
-                l_gripper.set_ctrl(data, l_val)
-                r_gripper.set_ctrl(data, r_val)
+                _set_actuator_group(data, l_grippers, l_val)
+                _set_actuator_group(data, r_grippers, r_val)
             
             step(model, data)
         

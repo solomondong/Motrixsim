@@ -3,12 +3,12 @@
 
 This script does NOT need a renderer / DISPLAY. It loads the given model,
 lists all actuators / joints, probes common gripper actuator names, and
-runs a closed-loop control test on the left gripper to verify:
+runs a closed-loop control test on the left gripper actuator group to verify:
 
   1. Whether the gripper actuator exists in the loaded model.
   2. Whether the actuator actually moves the finger joint(s).
-  3. Whether the equality (mimic) constraint correctly couples the two
-     fingers of a parallel gripper.
+  3. Whether each visible finger segment (base + outer pad) follows the same
+     ctrl target.
 
 Usage:
     conda run --live-stream -n motrix-lerobot \
@@ -32,7 +32,13 @@ from motrixsim import SceneData, load_model, step
 
 GRIPPER_ACTUATOR_CANDIDATES = [
     "actuator_l_gripper",
+    "actuator_l_gripper_r",
+    "actuator_l_gripper_l_pad",
+    "actuator_l_gripper_r_pad",
     "actuator_r_gripper",
+    "actuator_r_gripper_r",
+    "actuator_r_gripper_l_pad",
+    "actuator_r_gripper_r_pad",
     "mimic_relation_l",
     "mimic_relation_r",
     "l_gripper",
@@ -108,8 +114,17 @@ def _probe_names(model) -> None:
 
 
 def _run_control_test(model, data) -> None:
-    l_actuator = model.get_actuator("actuator_l_gripper")
-    if l_actuator is None:
+    l_actuators = [
+        model.get_actuator(name)
+        for name in (
+            "actuator_l_gripper",
+            "actuator_l_gripper_r",
+            "actuator_l_gripper_l_pad",
+            "actuator_l_gripper_r_pad",
+        )
+    ]
+    l_actuators = [actuator for actuator in l_actuators if actuator is not None]
+    if not l_actuators:
         print("\n[skip] actuator_l_gripper not present, control test skipped.")
         return
 
@@ -121,13 +136,14 @@ def _run_control_test(model, data) -> None:
     }
     has_pad = tracked["fl_pad"] is not None or tracked["fr_pad"] is not None
 
-    print("\n=== Control response test on actuator_l_gripper ===")
-    print("  (driving ctrl through 0 -> 0.04 -> 0 -> 0.04, 500 steps each)")
+    print("\n=== Control response test on left gripper actuator group ===")
+    print(f"  (driving {len(l_actuators)} actuators through 0 -> 0.04 -> 0 -> 0.04, 500 steps each)")
     header = "  ctrl     " + " ".join(f"{k:>10}" for k in tracked.keys())
     print(header)
     sequence = [0.0, 0.04, 0.0, 0.04]
     for target in sequence:
-        l_actuator.set_ctrl(data, float(target))
+        for actuator in l_actuators:
+            actuator.set_ctrl(data, float(target))
         for _ in range(500):
             step(model, data)
         readings = []
@@ -138,9 +154,9 @@ def _run_control_test(model, data) -> None:
         print(row)
 
     print("\n判读规则：")
-    print("  - 所有 4 个数值跟随 ctrl 变化           -> 双 body / mimic 都正常")
-    print("  - fl_base 跟随但 fl_pad 不动            -> pad 关节没有 mimic equality，外段不会动")
-    print("  - fl_base 动、fr_base 不动              -> 左右手指 mimic 失效")
+    print("  - 所有 4 个数值跟随 ctrl 变化           -> 每个夹指结构件都被同步驱动")
+    print("  - fl_base 跟随但 fl_pad 不动            -> 外段 actuator 缺失或没有被脚本同步下发")
+    print("  - fl_base 动、fr_base 不动              -> 对侧夹指 actuator 缺失或没有被脚本同步下发")
     if not has_pad:
         print("\n  [info] 当前模型未发现 _pad 关节, 说明使用的是单 body 单段手指设计.")
 

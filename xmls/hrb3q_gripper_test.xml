@@ -104,8 +104,8 @@
                                                 <geom type="mesh" mesh="arml7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
                                                 
                                                 <!-- Left DH Parallel Gripper.
-                                                     Keep only the inner long finger structure shown near the grasp gap.
-                                                     The outer/root block segment is intentionally removed. -->
+                                                     The extra light-gray long finger visuals are intentionally removed;
+                                                     keep the existing gripper base/actuator structure unchanged. -->
                                                 <body name="gripper_l_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_l_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
@@ -113,13 +113,11 @@
                                                     <body name="gripper_l_finger_l" pos="0 0 0.04">
                                                         <inertial pos="-0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_l_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_l_left_inner" type="box" size="0.005 0.012 0.028" pos="-0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
 
                                                     <body name="gripper_l_finger_r" pos="0 0 0.04">
                                                         <inertial pos="0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_l_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_l_right_inner" type="box" size="0.005 0.012 0.028" pos="0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
 
                                                     <site name="eef_l" pos="0 0 0.07" size="0.008" rgba="1 0.4 0 1"/>
@@ -169,7 +167,7 @@
                                                 <geom type="mesh" mesh="armr7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
                                                 
                                                 <!-- Right DH Parallel Gripper.
-                                                     Same inner-long-finger-only design as the left gripper. -->
+                                                     Same visual-removal policy as the left gripper. -->
                                                 <body name="gripper_r_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_r_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
@@ -177,13 +175,11 @@
                                                     <body name="gripper_r_finger_l" pos="0 0 0.04">
                                                         <inertial pos="-0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_r_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_r_left_inner" type="box" size="0.005 0.012 0.028" pos="-0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
 
                                                     <body name="gripper_r_finger_r" pos="0 0 0.04">
                                                         <inertial pos="0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_r_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_r_right_inner" type="box" size="0.005 0.012 0.028" pos="0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
 
                                                     <site name="eef_r" pos="0 0 0.07" size="0.008" rgba="1 0.4 0 1"/>

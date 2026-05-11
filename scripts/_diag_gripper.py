@@ -46,8 +46,12 @@ GRIPPER_ACTUATOR_CANDIDATES = [
 GRIPPER_JOINT_CANDIDATES = [
     "Joint_l_gripper_l",
     "Joint_l_gripper_r",
+    "Joint_l_gripper_l_pad",
+    "Joint_l_gripper_r_pad",
     "Joint_r_gripper_l",
     "Joint_r_gripper_r",
+    "Joint_r_gripper_l_pad",
+    "Joint_r_gripper_r_pad",
     "l_gripper_finger_l",
     "l_gripper_finger_r",
 ]
@@ -109,30 +113,36 @@ def _run_control_test(model, data) -> None:
         print("\n[skip] actuator_l_gripper not present, control test skipped.")
         return
 
-    finger_l = model.get_joint("Joint_l_gripper_l")
-    finger_r = model.get_joint("Joint_l_gripper_r")
+    tracked = {
+        "fl_base": model.get_joint("Joint_l_gripper_l"),
+        "fl_pad":  model.get_joint("Joint_l_gripper_l_pad"),
+        "fr_base": model.get_joint("Joint_l_gripper_r"),
+        "fr_pad":  model.get_joint("Joint_l_gripper_r_pad"),
+    }
+    has_pad = tracked["fl_pad"] is not None or tracked["fr_pad"] is not None
 
     print("\n=== Control response test on actuator_l_gripper ===")
     print("  (driving ctrl through 0 -> 0.04 -> 0 -> 0.04, 500 steps each)")
+    header = "  ctrl     " + " ".join(f"{k:>10}" for k in tracked.keys())
+    print(header)
     sequence = [0.0, 0.04, 0.0, 0.04]
     for target in sequence:
         l_actuator.set_ctrl(data, float(target))
         for _ in range(500):
             step(model, data)
-        pl = finger_l.get_dof_pos(data)[0] if finger_l is not None else float("nan")
-        pr = finger_r.get_dof_pos(data)[0] if finger_r is not None else float("nan")
-        diff_l = abs(pl - target) if finger_l is not None else float("nan")
-        mimic_err = abs(pl - pr) if (finger_l is not None and finger_r is not None) else float("nan")
-        print(
-            f"  ctrl={target:.3f}  finger_l={pl:+.4f}  finger_r={pr:+.4f}"
-            f"   |Δ_l|={diff_l:.4f}  |finger_l-finger_r|={mimic_err:.4f}"
-        )
+        readings = []
+        for k, j in tracked.items():
+            val = j.get_dof_pos(data)[0] if j is not None else float("nan")
+            readings.append((k, val))
+        row = f"  {target:.3f}   " + " ".join(f"{v:+10.4f}" for _, v in readings)
+        print(row)
 
     print("\n判读规则：")
-    print("  - finger_l 跟随 ctrl 变化   -> actuator 工作正常")
-    print("  - finger_l 不动              -> kp/damping 异常 或 actuator 实际未绑定关节")
-    print("  - finger_l 动、finger_r 不动 -> <equality polycoef> mimic 不生效")
-    print("                                  (建议改成左右各一个 actuator)")
+    print("  - 所有 4 个数值跟随 ctrl 变化           -> 双 body / mimic 都正常")
+    print("  - fl_base 跟随但 fl_pad 不动            -> pad 关节没有 mimic equality，外段不会动")
+    print("  - fl_base 动、fr_base 不动              -> 左右手指 mimic 失效")
+    if not has_pad:
+        print("\n  [info] 当前模型未发现 _pad 关节, 说明使用的是单 body 单段手指设计.")
 
 
 def main() -> None:

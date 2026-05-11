@@ -105,6 +105,10 @@ PLACE_WORLD_XY = np.array([0.20, -0.42], dtype=np.float64)
 LIFT_DELTA_Z = 0.14
 RETREAT_DELTA_Z = 0.15
 
+# Gripper ctrl values (must match actuator_l_gripper ctrlrange in XML).
+GRIPPER_OPEN = 0.04
+GRIPPER_CLOSED = 0.0
+
 # Joint targets for open-loop shaping stages.  Convention: q = [body, l1..l7].
 READY_QPOS   = np.array([0.0, 0.0, 1.1, 0.0, 1.6, 0.0, 0.0, 0.0], dtype=np.float64)
 TUCK_QPOS    = np.array([0.0, 0.0, 1.6, 0.0, 2.4, 0.0, 0.0, 0.0], dtype=np.float64)
@@ -157,10 +161,12 @@ class Stage(str, Enum):
 # ---------------------------------------------------------------------------
 
 class HRB3QGraspDemo:
-    def __init__(self, model_path: str, debug: bool = False) -> None:
+    def __init__(self, model_path: str, debug: bool = False, fake_grasp: bool = False) -> None:
         self.debug = debug
+        self.fake_grasp = fake_grasp
         abs_path = str(Path(model_path).resolve())
         print(f"loading: {abs_path}")
+        print(f"grasp mode: {'FAKE (teleport)' if fake_grasp else 'REAL (gripper actuator)'}")
         self.model = load_model(abs_path)
         self.data = SceneData(self.model)
 
@@ -186,11 +192,17 @@ class HRB3QGraspDemo:
         self.acts_l = [self._require("actuator", f"actuator_l{i}") for i in range(1, 8)]
         self.acts_r = [self._require("actuator", f"actuator_r{i}") for i in range(1, 8)]
 
+        # Gripper actuators (real grasping).
+        self.l_gripper = self._require("actuator", "actuator_l_gripper")
+        self.r_gripper = self._require("actuator", "actuator_r_gripper")
+        self.l_gripper_target = GRIPPER_OPEN
+        self.r_gripper_target = GRIPPER_OPEN
+
         self.bottle_body = self.model.get_body("Bt_/001_bottle_base2")
         if self.bottle_body is None:
             raise RuntimeError("bottle body not found: Bt_/001_bottle_base2")
 
-        # Grasp state
+        # Teleport (fake-grasp) state — only used when --fake-grasp is set.
         self.grasp_active = False
         self.bottle_in_ee: np.ndarray | None = None
 
@@ -252,22 +264,36 @@ class HRB3QGraspDemo:
         return result[2:2 + self.chain.num_dof_pos]
 
     # ------------------------------------------------------------------
-    # Virtual grasp
+    # Grasp (real via gripper actuator; fake/teleport only when --fake-grasp)
     # ------------------------------------------------------------------
+    def _command_gripper(self) -> None:
+        """Re-issue the current gripper ctrl target (called every phys step)."""
+        self.l_gripper.set_ctrl(self.data, float(self.l_gripper_target))
+        self.r_gripper.set_ctrl(self.data, float(self.r_gripper_target))
+
     def _activate_grasp(self) -> None:
-        ee = self._ee_pose()
-        bottle = self._bottle_pose()
-        self.bottle_in_ee = pose_relative(bottle, ee)
-        self.grasp_active = True
-        print(f"  grasp activated. bottle@EE = {self.bottle_in_ee[:3]}")
+        self.l_gripper_target = GRIPPER_CLOSED
+        if self.fake_grasp:
+            ee = self._ee_pose()
+            bottle = self._bottle_pose()
+            self.bottle_in_ee = pose_relative(bottle, ee)
+            self.grasp_active = True
+            print(f"  [fake] teleport grasp activated. bottle@EE = {self.bottle_in_ee[:3]}")
+        else:
+            print(f"  [real] closing gripper: actuator_l_gripper -> {GRIPPER_CLOSED}")
 
     def _deactivate_grasp(self) -> None:
-        self.grasp_active = False
-        self.bottle_in_ee = None
-        print("  grasp released")
+        self.l_gripper_target = GRIPPER_OPEN
+        if self.fake_grasp:
+            self.grasp_active = False
+            self.bottle_in_ee = None
+            print("  [fake] teleport released")
+        else:
+            print(f"  [real] opening gripper: actuator_l_gripper -> {GRIPPER_OPEN}")
 
     def _update_grasp_follow(self) -> None:
-        if not self.grasp_active or self.bottle_in_ee is None:
+        """Teleport-style bottle follow. Only used when --fake-grasp is set."""
+        if not self.fake_grasp or not self.grasp_active or self.bottle_in_ee is None:
             return
         ee = self._ee_pose()
         pose = pose_compose(ee, self.bottle_in_ee).astype(np.float64)
@@ -368,6 +394,10 @@ class HRB3QGraspDemo:
         self._command_waist_zero()
         self._command_right_arm_zero()
         self._command_qpos(HOME_QPOS)
+        # Start with both grippers open.
+        self.l_gripper_target = GRIPPER_OPEN
+        self.r_gripper_target = GRIPPER_OPEN
+        self._command_gripper()
         for _ in range(STARTUP_STEPS):
             step(self.model, self.data)
         print(f"startup done. left EE = {self._ee_pose()[:3]}")
@@ -412,6 +442,8 @@ class HRB3QGraspDemo:
         # Re-issue appropriate commands every step
         self._command_waist_zero()
         self._command_right_arm_zero()
+        # Gripper ctrl must be re-issued every step so the contact / hold force is stable.
+        self._command_gripper()
 
         if self.mode == Mode.OPEN_LOOP_QPOS and self.qpos_target is not None:
             self._command_qpos(self.qpos_target)
@@ -422,7 +454,7 @@ class HRB3QGraspDemo:
 
         self.stage_step += 1
         self._advance_stage()
-        self._update_grasp_follow()
+        self._update_grasp_follow()  # no-op unless --fake-grasp
         step(self.model, self.data)
 
     def render_step(self, render: RenderApp) -> None:
@@ -455,8 +487,16 @@ def main() -> None:
     )
     parser.add_argument("--model", default="xmls/hrb3q_grasp_demo.xml")
     parser.add_argument("--debug", action="store_true", help="draw EE and target gizmos")
+    parser.add_argument(
+        "--fake-grasp", action="store_true",
+        help="fallback: teleport the bottle to follow the EE instead of using real gripper actuator",
+    )
     args = parser.parse_args()
-    HRB3QGraspDemo(model_path=args.model, debug=args.debug).run()
+    HRB3QGraspDemo(
+        model_path=args.model,
+        debug=args.debug,
+        fake_grasp=args.fake_grasp,
+    ).run()
 
 
 if __name__ == "__main__":

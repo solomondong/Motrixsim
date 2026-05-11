@@ -7,7 +7,7 @@ runs a closed-loop control test on the left gripper actuator group to verify:
 
   1. Whether the gripper actuator exists in the loaded model.
   2. Whether the actuator actually moves the finger joint(s).
-  3. Whether the two remaining inner/root finger structures follow the same
+  3. Whether the two remaining inner long finger structures follow the same
      ctrl target.
 
 Usage:
@@ -141,7 +141,7 @@ def _run_control_test(model, data) -> None:
         print(row)
 
     print("\n判读规则：")
-    print("  - 两个数值都跟随 ctrl 变化              -> 左右内部夹指结构同步正常")
+    print("  - 两个数值都跟随 ctrl 变化              -> 左右内侧细长夹指同步正常")
     print("  - 只有一个数值跟随 ctrl                 -> 对侧 actuator 缺失或没有被脚本同步下发")
 
 

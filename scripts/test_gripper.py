@@ -67,7 +67,7 @@ def test_gripper(model_path: str) -> None:
         else:
             print(f"  Warning: actuator '{name}' not found")
     
-    # Get gripper actuators.  Each side keeps two inner/root finger structures.
+    # Get gripper actuators.  Each side keeps two inner long finger structures.
     l_grippers = _actuator_group(model, [
         "actuator_l_gripper",
         "actuator_l_gripper_r",

@@ -108,7 +108,7 @@ RETREAT_DELTA_Z = 0.15
 GRIPPER_OPEN = 0.04
 GRIPPER_CLOSED = 0.0
 GRIPPER_PINCH = 0.012
-GRIPPER_FINGER_CENTER_Z = 0.012
+GRIPPER_FINGER_CENTER_Z = 0.055
 
 # Joint targets for open-loop shaping stages.  Convention: q = [body, l1..l7].
 READY_QPOS   = np.array([0.0, 0.0, 1.1, 0.0, 1.6, 0.0, 0.0, 0.0], dtype=np.float64)
@@ -193,7 +193,7 @@ class HRB3QGraspDemo:
         self.acts_l = [self._require("actuator", f"actuator_l{i}") for i in range(1, 8)]
         self.acts_r = [self._require("actuator", f"actuator_r{i}") for i in range(1, 8)]
 
-        # Gripper actuators (real grasping).  Only the inner/root finger
+        # Gripper actuators (real grasping).  Only the inner long finger
         # structures remain, so command the left/right finger joints together.
         self.l_grippers = self._require_actuator_group([
             "actuator_l_gripper",
@@ -387,8 +387,8 @@ class HRB3QGraspDemo:
 
     def _grasp_pose(self) -> np.ndarray:
         b = self._bottle_pose()
-        # The IK target is the gripper base.  Align the remaining inner finger
-        # structures with the bottle's mid-height so they close around the body.
+        # The IK target is the gripper base.  Align the remaining inner long
+        # finger structures with the bottle's mid-height so they close around the body.
         return self._pose(np.array([b[0], b[1], b[2] + BOTTLE_HEIGHT * 0.5 - GRIPPER_FINGER_CENTER_Z]))
 
     def _lift_pose(self) -> np.ndarray:

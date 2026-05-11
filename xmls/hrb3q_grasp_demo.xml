@@ -107,22 +107,22 @@
                                                 <site name="eef_l" pos="0 0 0.08" size="0.01" rgba="1 0.4 0 1"/>
 
                                                 <!-- Left DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total).
-                                                     Each finger keeps only the inner/root structure.
-                                                     The outer pad segment is intentionally removed. -->
+                                                     Keep only the inner long finger structure shown near the grasp gap.
+                                                     The outer/root block segment is intentionally removed. -->
                                                 <body name="gripper_l_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_l_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
 
                                                     <body name="gripper_l_finger_l" pos="0 0 0.04">
-                                                        <inertial pos="-0.02 0 0.012" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="-0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_l_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_l_left_base" type="box" size="0.008 0.015 0.015" pos="-0.005 0 0.012" rgba="0.4 0.4 0.45 1" friction="2 0.05 0.001"/>
+                                                        <geom name="finger_l_left_inner" type="box" size="0.005 0.012 0.028" pos="-0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
 
                                                     <body name="gripper_l_finger_r" pos="0 0 0.04">
-                                                        <inertial pos="0.02 0 0.012" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_l_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_l_right_base" type="box" size="0.008 0.015 0.015" pos="0.005 0 0.012" rgba="0.4 0.4 0.45 1" friction="2 0.05 0.001"/>
+                                                        <geom name="finger_l_right_inner" type="box" size="0.005 0.012 0.028" pos="0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
                                                 </body>
                                             </body>
@@ -171,21 +171,21 @@
                                                 <site name="eef_r" pos="0 0 0.08" size="0.01" rgba="1 0.4 0 1"/>
 
                                                 <!-- Right DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total).
-                                                     Same inner-structure-only design as the left gripper. -->
+                                                     Same inner-long-finger-only design as the left gripper. -->
                                                 <body name="gripper_r_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_r_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
 
                                                     <body name="gripper_r_finger_l" pos="0 0 0.04">
-                                                        <inertial pos="-0.02 0 0.012" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="-0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_r_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_r_left_base" type="box" size="0.008 0.015 0.015" pos="-0.005 0 0.012" rgba="0.4 0.4 0.45 1" friction="2 0.05 0.001"/>
+                                                        <geom name="finger_r_left_inner" type="box" size="0.005 0.012 0.028" pos="-0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
 
                                                     <body name="gripper_r_finger_r" pos="0 0 0.04">
-                                                        <inertial pos="0.02 0 0.012" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_r_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_r_right_base" type="box" size="0.008 0.015 0.015" pos="0.005 0 0.012" rgba="0.4 0.4 0.45 1" friction="2 0.05 0.001"/>
+                                                        <geom name="finger_r_right_inner" type="box" size="0.005 0.012 0.028" pos="0.005 0 0.055" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001"/>
                                                     </body>
                                                 </body>
                                             </body>
@@ -247,7 +247,7 @@
         <position name="actuator_r7" joint="Joint_r7" kp="150" kv="15" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
 
         <!-- DH Parallel Gripper actuators.
-             Only the inner/root finger structures are kept. Scripts command the
+             Only the inner long finger structures are kept. Scripts command the
              left/right finger joints with the same target every physics step.
              ctrlrange: 0 = fully closed, 0.04 = fully open (40mm stroke per finger). -->
         <position name="actuator_l_gripper"       joint="Joint_l_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>

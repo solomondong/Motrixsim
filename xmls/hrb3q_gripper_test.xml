@@ -28,14 +28,12 @@
         <mesh name="arml4" file="arml4.STL"/>
         <mesh name="arml5" file="arml5.STL"/>
         <mesh name="arml6" file="arml6.STL"/>
-        <mesh name="arml7" file="arml7.STL"/>
         <mesh name="armr1" file="armr1.STL"/>
         <mesh name="armr2" file="armr2.STL"/>
         <mesh name="armr3" file="armr3.STL"/>
         <mesh name="armr4" file="armr4.STL"/>
         <mesh name="armr5" file="armr5.STL"/>
         <mesh name="armr6" file="armr6.STL"/>
-        <mesh name="armr7" file="armr7.STL"/>
     </asset>
 
     <worldbody>
@@ -101,23 +99,23 @@
                                             <body name="arml7" pos="0 -0.12 -0.036" euler="1.5708 0 0">
                                                 <inertial pos="0.001379 0 0.059414" mass="1.540" diaginertia="0.000615 0.00116 0.00132"/>
                                                 <joint name="Joint_l7" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
-                                                <geom type="mesh" mesh="arml7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+                                                <geom name="arml7_wrist" type="box" pos="0 0 0.02" size="0.055 0.031 0.06" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
                                                 
-                                                <!-- Left DH Parallel Gripper.
-                                                     The extra light-gray long finger visuals are intentionally removed;
-                                                     keep the existing gripper base/actuator structure unchanged. -->
+                                                <!-- Left DH parallel gripper: body + two inner pad geoms (no arml7 CAD finger shell). -->
                                                 <body name="gripper_l_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_l_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
 
                                                     <body name="gripper_l_finger_l" pos="0 0 0.04">
-                                                        <inertial pos="-0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="-0.02 0 0.056" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_l_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
+                                                        <geom name="finger_l_left_inner" type="box" size="0.005 0.012 0.056" pos="-0.005 0 0.056" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001" contype="0" conaffinity="0"/>
                                                     </body>
 
                                                     <body name="gripper_l_finger_r" pos="0 0 0.04">
-                                                        <inertial pos="0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="0.02 0 0.056" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_l_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
+                                                        <geom name="finger_l_right_inner" type="box" size="0.005 0.012 0.056" pos="0.005 0 0.056" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001" contype="0" conaffinity="0"/>
                                                     </body>
 
                                                     <site name="eef_l" pos="0 0 0.07" size="0.008" rgba="1 0.4 0 1"/>
@@ -164,22 +162,23 @@
                                             <body name="armr7" pos="0 -0.12 -0.036" euler="1.5708 0 0">
                                                 <inertial pos="-0.001379 0 0.059414" mass="1.540" diaginertia="0.000615 0.00116 0.00132"/>
                                                 <joint name="Joint_r7" type="hinge" axis="0 0 -1" range="-3.14159 3.14159" damping="5"/>
-                                                <geom type="mesh" mesh="armr7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
+                                                <geom name="armr7_wrist" type="box" pos="0 0 0.02" size="0.055 0.031 0.06" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
                                                 
-                                                <!-- Right DH Parallel Gripper.
-                                                     Same visual-removal policy as the left gripper. -->
+                                                <!-- Right DH parallel gripper (same as left). -->
                                                 <body name="gripper_r_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_r_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
 
                                                     <body name="gripper_r_finger_l" pos="0 0 0.04">
-                                                        <inertial pos="-0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="-0.02 0 0.056" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_r_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
+                                                        <geom name="finger_r_left_inner" type="box" size="0.005 0.012 0.056" pos="-0.005 0 0.056" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001" contype="0" conaffinity="0"/>
                                                     </body>
 
                                                     <body name="gripper_r_finger_r" pos="0 0 0.04">
-                                                        <inertial pos="0.02 0 0.055" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="0.02 0 0.056" mass="0.04" diaginertia="0.00001 0.00001 0.000005"/>
                                                         <joint name="Joint_r_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
+                                                        <geom name="finger_r_right_inner" type="box" size="0.005 0.012 0.056" pos="0.005 0 0.056" rgba="0.65 0.65 0.7 1" friction="2 0.05 0.001" contype="0" conaffinity="0"/>
                                                     </body>
 
                                                     <site name="eef_r" pos="0 0 0.07" size="0.008" rgba="1 0.4 0 1"/>
@@ -219,10 +218,7 @@
         <position name="actuator_r6" joint="Joint_r6" kp="200" kv="20" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
         <position name="actuator_r7" joint="Joint_r7" kp="150" kv="15" ctrllimited="true" ctrlrange="-3.14159 3.14159"/>
 
-        <!-- DH Parallel Gripper actuators.
-             Only the inner long finger structures are kept. Scripts command the
-             left/right finger joints with the same target every physics step.
-             ctrlrange: 0 = fully closed, 0.04 = fully open (40mm stroke per finger). -->
+        <!-- DH parallel gripper: two slide joints per side; set both ctrl to the same value. -->
         <position name="actuator_l_gripper"       joint="Joint_l_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
         <position name="actuator_l_gripper_r"     joint="Joint_l_gripper_r"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>
         <position name="actuator_r_gripper"       joint="Joint_r_gripper_l"     kp="1200" kv="80" ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-50 50"/>

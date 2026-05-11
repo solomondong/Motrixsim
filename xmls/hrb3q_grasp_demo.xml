@@ -105,21 +105,29 @@
                                                 <geom type="mesh" mesh="arml7" contype="0" conaffinity="0" rgba="0.4 0.7 1.0 1"/>
                                                 <site name="eef_l" pos="0 0 0.08" size="0.01" rgba="1 0.4 0 1"/>
 
-                                                <!-- Left DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total) -->
+                                                <!-- Left DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total).
+                                                     Each finger is composed of two visible segments:
+                                                       - finger base (root segment, rigid mount on the slide)
+                                                       - finger pad (replaceable gripping pad bolted on the base)
+                                                     They share one slide joint and translate together. -->
                                                 <body name="gripper_l_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_l_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
 
                                                     <body name="gripper_l_finger_l" pos="0 0 0.04">
-                                                        <inertial pos="-0.02 0 0.03" mass="0.05" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="-0.02 0 0.03" mass="0.08" diaginertia="0.000016 0.000016 0.000008"/>
                                                         <joint name="Joint_l_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_l_left" type="box" size="0.005 0.012 0.035" pos="-0.005 0 0.035" rgba="0.6 0.6 0.65 1"/>
+                                                        <!-- Segment 1: finger base (root mount) -->
+                                                        <geom name="finger_l_left_base" type="box" size="0.008 0.015 0.015" pos="-0.005 0 0.012" rgba="0.4 0.4 0.45 1"/>
+                                                        <!-- Segment 2: finger pad (gripping pad, longer & thinner) -->
+                                                        <geom name="finger_l_left_pad"  type="box" size="0.005 0.012 0.028" pos="-0.005 0 0.055" rgba="0.65 0.65 0.7 1"/>
                                                     </body>
 
                                                     <body name="gripper_l_finger_r" pos="0 0 0.04">
-                                                        <inertial pos="0.02 0 0.03" mass="0.05" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="0.02 0 0.03" mass="0.08" diaginertia="0.000016 0.000016 0.000008"/>
                                                         <joint name="Joint_l_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_l_right" type="box" size="0.005 0.012 0.035" pos="0.005 0 0.035" rgba="0.6 0.6 0.65 1"/>
+                                                        <geom name="finger_l_right_base" type="box" size="0.008 0.015 0.015" pos="0.005 0 0.012" rgba="0.4 0.4 0.45 1"/>
+                                                        <geom name="finger_l_right_pad"  type="box" size="0.005 0.012 0.028" pos="0.005 0 0.055" rgba="0.65 0.65 0.7 1"/>
                                                     </body>
                                                 </body>
                                             </body>
@@ -167,21 +175,24 @@
                                                 <geom type="mesh" mesh="armr7" contype="0" conaffinity="0" rgba="0.9 0.92 0.93 1"/>
                                                 <site name="eef_r" pos="0 0 0.08" size="0.01" rgba="1 0.4 0 1"/>
 
-                                                <!-- Right DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total) -->
+                                                <!-- Right DH Parallel Gripper (Dahuan, 40mm stroke per finger, 80mm total).
+                                                     Each finger is composed of two visible segments (base + pad). -->
                                                 <body name="gripper_r_base" pos="0 0 0.08">
                                                     <inertial pos="0 0 0.02" mass="0.4" diaginertia="0.0002 0.0002 0.0001"/>
                                                     <geom name="gripper_r_body" type="box" size="0.025 0.03 0.02" pos="0 0 0.02" rgba="0.3 0.3 0.3 1" contype="0" conaffinity="0"/>
 
                                                     <body name="gripper_r_finger_l" pos="0 0 0.04">
-                                                        <inertial pos="-0.02 0 0.03" mass="0.05" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="-0.02 0 0.03" mass="0.08" diaginertia="0.000016 0.000016 0.000008"/>
                                                         <joint name="Joint_r_gripper_l" type="slide" axis="-1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_r_left" type="box" size="0.005 0.012 0.035" pos="-0.005 0 0.035" rgba="0.6 0.6 0.65 1"/>
+                                                        <geom name="finger_r_left_base" type="box" size="0.008 0.015 0.015" pos="-0.005 0 0.012" rgba="0.4 0.4 0.45 1"/>
+                                                        <geom name="finger_r_left_pad"  type="box" size="0.005 0.012 0.028" pos="-0.005 0 0.055" rgba="0.65 0.65 0.7 1"/>
                                                     </body>
 
                                                     <body name="gripper_r_finger_r" pos="0 0 0.04">
-                                                        <inertial pos="0.02 0 0.03" mass="0.05" diaginertia="0.00001 0.00001 0.000005"/>
+                                                        <inertial pos="0.02 0 0.03" mass="0.08" diaginertia="0.000016 0.000016 0.000008"/>
                                                         <joint name="Joint_r_gripper_r" type="slide" axis="1 0 0" range="0 0.04" damping="10"/>
-                                                        <geom name="finger_r_right" type="box" size="0.005 0.012 0.035" pos="0.005 0 0.035" rgba="0.6 0.6 0.65 1"/>
+                                                        <geom name="finger_r_right_base" type="box" size="0.008 0.015 0.015" pos="0.005 0 0.012" rgba="0.4 0.4 0.45 1"/>
+                                                        <geom name="finger_r_right_pad"  type="box" size="0.005 0.012 0.028" pos="0.005 0 0.055" rgba="0.65 0.65 0.7 1"/>
                                                     </body>
                                                 </body>
                                             </body>
